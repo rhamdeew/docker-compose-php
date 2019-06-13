@@ -118,7 +118,6 @@ SSL-сертификаты сохраняются в директорию docker
 строчки в конфиге docker-compose.yml
 
 ```
-      # - ./docker/nginx/acme-challenge:/usr/share/nginx/html:ro
       # - ./docker/nginx/ssl:/etc/nginx/ssl:ro
 ```
 
