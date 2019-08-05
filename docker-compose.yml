@@ -4,13 +4,13 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    restart: always
+    restart: unless-stopped
     ports:
       - '127.0.0.1:1025:1025'
 
   db:
     image: mariadb
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: superpass
     volumes:
@@ -22,7 +22,7 @@ services:
   nginx:
     build: ./docker/nginx/build
     image: nginx
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./docker/nginx/.htpasswd:/etc/nginx/.htpasswd:ro
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
@@ -38,12 +38,12 @@ services:
 
   adminer:
     image: adminer
-    restart: always
+    restart: unless-stopped
 
   # php-71:
   #   build: ./docker/php-71/build
   #   image: php-71
-  #   restart: always
+  #   restart: unless-stopped
   #   volumes:
   #     - ./docker/php-71/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/php-71/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
@@ -53,7 +53,7 @@ services:
   # php-72:
   #   build: ./docker/php-72/build
   #   image: php-72
-  #   restart: always
+  #   restart: unless-stopped
   #   volumes:
   #     - ./docker/php-72/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/php-72/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
@@ -63,7 +63,7 @@ services:
   php-73:
     build: ./docker/php-73/build
     image: php-73
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./docker/php-73/config/msmtprc:/etc/msmtprc:ro
       - ./docker/php-73/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
@@ -73,7 +73,7 @@ services:
   # apache-php-71:
   #   build: ./docker/apache-php-71/build
   #   image: apache-php-71
-  #   restart: always
+  #   restart: unless-stopped
   #   volumes:
   #     - ./docker/apache-php-71/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/apache-php-71/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
@@ -84,7 +84,7 @@ services:
   # apache-php-56:
   #   build: ./docker/apache-php-56/build
   #   image: apache-php-56
-  #   restart: always
+  #   restart: unless-stopped
   #   volumes:
   #     - ./docker/apache-php-56/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/apache-php-56/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
