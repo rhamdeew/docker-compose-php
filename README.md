@@ -105,6 +105,11 @@ docker-compose exec php-71 /bin/ash и затем mysql --host=db -u<юзер> -
 
 Пароль прописан в параметре MYSQL_ROOT_PASSWORD в docker-compose.yml
 
+#### Пример запуска фоновых задач по Cron
+
+```
+* * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-73 /srv/projects/site.test/yii api/send
+```
 
 #### Acme.sh
 
