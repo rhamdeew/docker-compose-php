@@ -1,5 +1,7 @@
 ## Nginx + MariaDB + MailHog + PHP-71/72/73 FPM + Apache mod-php 56/71
 
+![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
+
 ### Управление
 
 
