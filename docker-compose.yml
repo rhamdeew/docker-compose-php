@@ -5,8 +5,8 @@ services:
   mailhog:
     image: mailhog/mailhog
     restart: unless-stopped
-    ports:
-      - '127.0.0.1:1025:1025'
+    #ports:
+    #  - '127.0.0.1:1025:1025'
 
   db:
     image: mariadb
@@ -16,8 +16,8 @@ services:
     volumes:
       # - ./docker/mariadb/config:/etc/mysql/conf.d:ro
       - ./db/data:/var/lib/mysql
-    ports:
-      - '127.0.0.1:3306:3306'
+    #ports:
+    #  - '127.0.0.1:3306:3306'
 
   nginx:
     build: ./docker/nginx/build
