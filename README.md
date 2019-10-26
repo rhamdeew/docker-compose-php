@@ -138,7 +138,7 @@ SSL-сертификаты сохраняются в директорию docker
 
 ```
 00 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/acme/docker-compose.yml run --rm acme acme.sh --cron
-02 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec nginx nginx -t
+02 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec nginx nginx -t && /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml restart nginx
 ```
 
 
