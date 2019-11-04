@@ -5,12 +5,20 @@ on: [push]
 jobs:
 
   build:
- 
+
     runs-on: ubuntu-latest
- 
+
     steps:
     - uses: actions/checkout@v1
     - name: Build the stack
       run: docker-compose up -d
-    - name: Test
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 10 --retry-connrefused http://localhost/
+    - name: Test DB
+      run: docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet db 3306
+    - name: Test PHP
+      run: docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet php-73 9000
+    - name: Test Nginx localhost
+      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused -I -L http://localhost/
+    - name: Test Nginx mailhog
+      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused -I -L http://localhost:8025/
+    - name: Test Nginx adminer
+      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused -I -L http://localhost:8080/
