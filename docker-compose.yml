@@ -7,6 +7,11 @@ services:
     restart: unless-stopped
     #ports:
     #  - '127.0.0.1:1025:1025'
+    logging:
+        driver: "json-file"
+        options:
+            max-file: "5"
+            max-size: "20m"
 
   db:
     image: mariadb
@@ -18,6 +23,11 @@ services:
       - ./db/data:/var/lib/mysql
     #ports:
     #  - '127.0.0.1:3306:3306'
+    logging:
+        driver: "json-file"
+        options:
+            max-file: "5"
+            max-size: "20m"
 
   nginx:
     build: ./docker/nginx/build
@@ -35,6 +45,11 @@ services:
       # -"443:443"
       - "8025:8025"
       - "8080:8080"
+    logging:
+        driver: "json-file"
+        options:
+            max-file: "5"
+            max-size: "20m"
 
   adminer:
     image: adminer
@@ -49,6 +64,11 @@ services:
   #     - ./docker/php-71/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
   #     - ./docker/php-71/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
   #     - ./projects/:/srv/projects/
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "20m"
 
   # php-72:
   #   build: ./docker/php-72/build
@@ -59,6 +79,11 @@ services:
   #     - ./docker/php-72/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
   #     - ./docker/php-72/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
   #     - ./projects/:/srv/projects/
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "20m"
 
   php-73:
     build: ./docker/php-73/build
@@ -69,6 +94,11 @@ services:
       - ./docker/php-73/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
       - ./docker/php-73/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - ./projects/:/srv/projects/
+    logging:
+        driver: "json-file"
+        options:
+            max-file: "5"
+            max-size: "20m"
 
   # apache-php-71:
   #   build: ./docker/apache-php-71/build
@@ -80,6 +110,11 @@ services:
   #     - ./docker/apache-php-71/config/apache2.conf:/etc/apache2/apache2.conf:ro
   #     - ./docker/apache-php-71/config/sites-enabled:/etc/apache2/sites-enabled:ro
   #     - ./projects/:/srv/projects/
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "20m"
 
   # apache-php-56:
   #   build: ./docker/apache-php-56/build
@@ -91,3 +126,8 @@ services:
   #     - ./docker/apache-php-56/config/apache2.conf:/etc/apache2/apache2.conf:ro
   #     - ./docker/apache-php-56/config/sites-enabled:/etc/apache2/sites-enabled:ro
   #     - ./projects/:/srv/projects/
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-file: "5"
+  #       max-size: "20m"
