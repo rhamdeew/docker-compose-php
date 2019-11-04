@@ -13,7 +13,7 @@ jobs:
     - name: Build the stack
       run: docker-compose up -d
     - name: Test DB
-      run: docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet db 3306
+      run: sleep 15 && docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet db 3306
     - name: Test PHP
       run: docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet php-73 9000
     - name: Test Nginx localhost
