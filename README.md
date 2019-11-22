@@ -8,28 +8,32 @@
 #### Запуск:
 
 ```
-docker-compose up -d
+#docker-compose up -d
+make up
 ```
 
 
 #### Остановка
 
 ```
-docker-compose stop
+#docker-compose stop
+make stop
 ```
 
 
 #### Просмотр статуса запущеных контейнеров
 
 ```
-docker-compose ps
+#docker-compose ps
+make ps
 ```
 
 
 #### Просмотр логов контейнера
 
 ```
-docker-compose logs -f (php-73|db|mailhog|nginx)
+#docker-compose logs -tail=100 -f (php-73|db|mailhog|nginx)
+make logs name=php-73
 ```
 
 
@@ -65,7 +69,8 @@ http://site.test - тестовый сайт (необходимо пропис�
 Запускаем все с ребилдом
 
 ```
-docker-compose up -d --build
+#docker-compose up -d --build
+make upb
 ```
 
 
@@ -101,14 +106,16 @@ docker-compose stop && docker-compose up -d --build
 #### Подключиться к БД с консоли
 
 ```
-docker-compose exec php-73 /bin/ash и затем mysql --host=db -u<юзер> -p<пароль>
+#docker-compose exec php-73 /bin/ash и затем mysql --host=db -u<юзер> -p<пароль>
+make exec name=php-73
 ```
 
 
 #### Запускать php-скрипты из консоли
 
 ```
-docker-compose exec php-73 /bin/ash
+#docker-compose exec php-73 /bin/ash
+make exec name=php-73
 ```
 
 
@@ -127,7 +134,8 @@ docker-compose exec php-73 /bin/ash
 Переходим в директорию acme и там выполняем:
 
 ```
-docker-compose run --rm acme acme.sh --issue -d site.ru -w /acme-challenge
+#docker-compose run --rm acme acme.sh --issue -d site.ru -w /acme-challenge
+make acme d="site.ru,www.site.ru"
 ```
 
 SSL-сертификаты сохраняются в директорию docker/nginx/ssl. Чтобы все заработало нужно раскомментировать
