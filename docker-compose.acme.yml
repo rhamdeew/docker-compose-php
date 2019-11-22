@@ -1,0 +1,9 @@
+version: '3.1'
+
+services:
+
+  acme:
+    image: neilpang/acme.sh
+    volumes:
+     - ./docker/nginx/acme-challenge:/acme-challenge
+     - ./docker/nginx/ssl:/acme.sh
