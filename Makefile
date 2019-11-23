@@ -20,7 +20,7 @@ dblogs:
 dbpass:
 	cat docker-compose.yml | grep MYSQL_ROOT_PASSWORD:
 mysql:
-	docker-compose exec php-73 mysql -uroot -hdb -p
+	docker-compose exec php-73 mysql -uroot -hdb -p || true
 
 #make rs name=php-73
 rs:
@@ -30,11 +30,11 @@ nrs:
 
 #make exec name=php-73
 exec:
-	docker-compose exec $(name) /bin/sh
+	docker-compose exec $(name) /bin/sh || true
 ex: exec
 
 php:
-	docker-compose exec php-73 /bin/ash
+	docker-compose exec php-73 /bin/ash || true
 pex: php
 	
 #make acme d="site.ru,www.site.ru"
@@ -43,4 +43,4 @@ acme:
 ssl: acme
 
 node:
-	docker-compose -f docker-compose.node.yml run --rm node /bin/bash
+	docker-compose -f docker-compose.node.yml run --rm node /bin/bash || true
