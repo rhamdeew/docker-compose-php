@@ -148,8 +148,6 @@ cp docker-compose.override.yml.example docker-compose.override.yml
 
 #### Acme.sh
 
-Переходим в директорию acme и там выполняем:
-
 ```
 #docker-compose run --rm acme acme.sh --issue -d site.ru -w /acme-challenge
 make acme d="site.ru,www.site.ru"
@@ -177,8 +175,6 @@ SSL-сертификаты сохраняются в директорию docker
 
 
 #### Node.js
-
-В директории node есть отдельный docker-compose.yml для Node.js
 
 ```
 #docker-compose run --rm node /bin/bash
