@@ -87,7 +87,8 @@ make upb
 В конфиге Nginx для сайта закомменчиваем старый апстрим и раскомменчиваем новый.
 
 ```
-docker-compose stop && docker-compose up -d --build
+#docker-compose stop && docker-compose up -d --build
+make st upb
 ```
 
 В случае с Apache в конфиге Nginx необходимо закомментировать весь блок для PHP-FPM и раскомментировать тот что ниже для Apache.
@@ -107,7 +108,7 @@ docker-compose stop && docker-compose up -d --build
 
 ```
 #docker-compose exec php-73 /bin/ash и затем mysql --host=db -u<юзер> -p<пароль>
-make exec name=php-73
+make mysql
 ```
 
 
@@ -115,13 +116,17 @@ make exec name=php-73
 
 ```
 #docker-compose exec php-73 /bin/ash
-make exec name=php-73
+make php
 ```
 
 
 #### Рутовый доступ к БД
 
 Пароль прописан в параметре MYSQL_ROOT_PASSWORD в docker-compose.yml
+
+```
+make dbpass
+```
 
 #### Пример запуска фоновых задач по Cron
 
@@ -164,6 +169,6 @@ SSL-сертификаты сохраняются в директорию docker
 В директории node есть отдельный docker-compose.yml для Node.js
 
 ```
-cd node
-docker-compose run --rm node /bin/bash
+#docker-compose run --rm node /bin/bash
+make node
 ```
