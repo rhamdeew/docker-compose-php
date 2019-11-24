@@ -6,3 +6,4 @@ services:
     image: node:10-stretch
     volumes:
      - ./projects:/srv/projects
+     - ./docker/node/node_modules:/root/node_modules
