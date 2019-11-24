@@ -43,4 +43,4 @@ acme:
 ssl: acme
 
 node:
-	docker-compose -f docker-compose.node.yml run --rm node /bin/bash || true
+	docker-compose -f docker-compose.node.yml run --rm node-10 /bin/ash || true

@@ -2,8 +2,7 @@ version: '3.1'
 
 services:
 
-  node:
-    image: node:10-stretch
+  node-10:
+    build: ./docker/node-10/build
     volumes:
      - ./projects:/srv/projects
-     - ./docker/node/node_modules:/root/node_modules
