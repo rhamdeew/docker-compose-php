@@ -63,7 +63,7 @@ services:
   #     - ./docker/php-71/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/php-71/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
   #     - ./docker/php-71/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-  #     - ./docker/php-73/composer/:/root/.composer/
+  #     - ./docker/php-71/composer/:/root/.composer/
   #     - ./projects/:/srv/projects/
   #   logging:
   #     driver: "json-file"
@@ -79,7 +79,7 @@ services:
   #     - ./docker/php-72/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/php-72/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
   #     - ./docker/php-72/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-  #     - ./docker/php-73/composer/:/root/.composer/
+  #     - ./docker/php-72/composer/:/root/.composer/
   #     - ./projects/:/srv/projects/
   #   logging:
   #     driver: "json-file"
