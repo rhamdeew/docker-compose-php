@@ -177,6 +177,6 @@ SSL-сертификаты сохраняются в директорию docker
 #### Node.js
 
 ```
-#docker-compose run --rm node /bin/bash
+#docker-compose run --rm node-10 /bin/ash
 make node
 ```
