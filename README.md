@@ -150,7 +150,7 @@ cp docker-compose.override.yml.example docker-compose.override.yml
 
 ```
 #docker-compose run --rm acme acme.sh --issue -d site.ru -w /acme-challenge
-make acme d="site.ru,www.site.ru"
+make ssl d="site.ru,www.site.ru"
 ```
 
 SSL-сертификаты сохраняются в директорию docker/nginx/ssl. Чтобы все заработало нужно раскомментировать
@@ -173,6 +173,11 @@ SSL-сертификаты сохраняются в директорию docker
 02 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec nginx nginx -t && /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml restart nginx
 ```
 
+Если нужно запустить acme.sh для каких-то других целей это можно сделать данной командой:
+
+```
+make acme
+```
 
 #### Node.js
 
