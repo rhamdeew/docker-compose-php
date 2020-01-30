@@ -1,4 +1,4 @@
-## Nginx + MariaDB + MailHog + PHP-71/72/73 FPM + Apache mod-php 56/71
+## Nginx + MariaDB + MailHog + PHP-71/72/73/74 FPM + Apache mod-php 56/71
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
@@ -34,8 +34,8 @@ make ps
 #### Просмотр логов контейнера
 
 ```
-#docker-compose logs -tail=100 -f (php-73|db|mailhog|nginx)
-make logs name=php-73
+#docker-compose logs -tail=100 -f (php-74|db|mailhog|nginx)
+make logs name=php-74
 ```
 
 
@@ -78,7 +78,7 @@ make upb
 
 #### Настройки php.ini
 
-Открываем docker/php-73/config/php.ini
+Открываем docker/php-74/config/php.ini
 Или же редактируем настройки php-fpm - www.conf
 
 
@@ -109,7 +109,7 @@ make st upb
 #### Подключиться к БД с консоли
 
 ```
-#docker-compose exec php-73 /bin/ash и затем mysql --host=db -u<юзер> -p<пароль>
+#docker-compose exec php-74 /bin/ash и затем mysql --host=db -u<юзер> -p<пароль>
 make mysql
 ```
 
@@ -117,7 +117,7 @@ make mysql
 #### Запускать php-скрипты из консоли
 
 ```
-#docker-compose exec php-73 /bin/ash
+#docker-compose exec php-74 /bin/ash
 make php
 ```
 
@@ -139,7 +139,7 @@ cp docker-compose.override.yml.example docker-compose.override.yml
 #### Пример запуска фоновых задач по Cron
 
 ```
-* * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-73 /srv/projects/site.test/yii api/send
+* * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-74 /srv/projects/site.test/yii api/send
 ```
 
 #### Acme.sh
