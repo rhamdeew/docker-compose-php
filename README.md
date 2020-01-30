@@ -2,12 +2,14 @@
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
-### Управление
+[Readme на русском](README_ru.md)
 
-Для удобства управления все основные команды внесены в Makefile. Для просмотра доступных команд выполните cat Makefile.
+### Management
+
+For ease of management, all basic commands are included in the Makefile. To list the available commands, run cat Makefile.
 
 
-#### Первый запуск:
+#### First run:
 
 ```
 cp mysql.env.example mysql.env
@@ -15,7 +17,7 @@ cp mysql.env.example mysql.env
 make up
 ```
 
-#### Запуск:
+#### Run:
 
 ```
 #docker-compose up -d
@@ -23,7 +25,7 @@ make up
 ```
 
 
-#### Остановка
+#### Stop
 
 ```
 #docker-compose stop
@@ -31,7 +33,7 @@ make stop
 ```
 
 
-#### Просмотр статуса запущеных контейнеров
+####  View the status of running containers
 
 ```
 #docker-compose ps
@@ -39,7 +41,7 @@ make ps
 ```
 
 
-#### Просмотр логов контейнера
+#### Viewing container logs
 
 ```
 #docker-compose logs -tail=100 -f (php-74|db|mailhog|nginx)
@@ -47,7 +49,7 @@ make logs name=php-74
 ```
 
 
-#### После запуска сервисы доступны по адресам:
+#### After launch, services are available at:
 
 http://localhost:8025 - mailhog (demo:demo)
 
@@ -58,25 +60,25 @@ http://site.test - тестовый сайт (необходимо пропис�
 *В настройках подключения к БД нужно прописать хост db*
 
 
-### Тонкая настройка
+### Fine tuning
 
 
-#### Смена логина/пароля super:demo
+#### Change login/password super: demo
 
-Открываем docker/nginx/.htpasswd и заменяем его содержимое
+Open docker/nginx/.htpasswd and replace its contents.
 
 
-#### Права на файлы как у хостового юзера
+#### Host user permissions
 
-В терминале командой id получаем цифровой идентификатор своего юзера и группы.
-Затем раскомменчиваем строчку
+In the terminal, using the id command, we get the digital identifier of our user and group.
+Then uncomment the line
 
 ```
 #RUN usermod -u 1050 www-data && groupmod -g 1050 www-data
 ```
 
-В docker/*php*/build/Dockerfile и заменяем там 1050 на свои идентификаторы.
-Запускаем все с ребилдом
+In docker /*php*/build/Dockerfile and replace 1050 with your identifiers there.
+We start containers with a rebuild
 
 ```
 #docker-compose up -d --build
@@ -84,37 +86,37 @@ make upb
 ```
 
 
-#### Настройки php.ini
+#### php.ini settings
 
-Открываем docker/php-74/config/php.ini
-Или же редактируем настройки php-fpm - www.conf
+Open docker/php-74/config/php.ini
+Or edit the php-fpm settings - www.conf
 
 
-#### Переключение версии php
+#### Switch php version
 
-Раскомменчиваем в docker-compose.yml блок с контейнером необходимой версии php.
+Uncomment the block with the container of the required php version in docker-compose.yml.
 
-В конфиге Nginx для сайта закомменчиваем старый апстрим и раскомменчиваем новый.
+In Nginx config for the site, comment out the old upstream and uncomment the new one.
 
 ```
 #docker-compose stop && docker-compose up -d --build
 make st upb
 ```
 
-В случае с Apache в конфиге Nginx необходимо закомментировать весь блок для PHP-FPM и раскомментировать тот что ниже для Apache.
-Также не забыть подправить конфиги Apache.
+In the case of Apache in the Nginx config, you need to comment out the entire block for PHP-FPM and uncomment the one below for Apache.
+Also do not forget to tweak Apache configs.
 
 
-#### Добавление нового хоста
+#### Adding a new host
 
-Достаточно скопировать конфиг docker/nginx/config/site.test.conf и немного его подправить.
+Just copy config docker/nginx/config/site.test.conf and tweak it.
 
-В случае с использованием контейнера с apache необходимо также поправить конфиг docker/apache-php-56/config/sites-enabled/site.test.conf
+In the case of using the container with apache, you must also fix the docker/apache-php-56/config/sites-enabled/site.test.conf config.
 
-Есть примеры конфигов для Nginx в docker/nginx/config/disabled/
+There are examples of Nginx config files in docker/nginx/config/disabled/
 
 
-#### Подключиться к БД с консоли
+#### Connect to the database from the console
 
 ```
 #docker-compose exec php-74 /bin/ash и затем mysql --host=db -u<юзер> -p<пароль>
@@ -122,7 +124,7 @@ make mysql
 ```
 
 
-#### Запускать php-скрипты из консоли
+#### Run php scripts from the console
 
 ```
 #docker-compose exec php-74 /bin/ash
@@ -130,17 +132,17 @@ make php
 ```
 
 
-#### Рутовый доступ к БД
+#### Route access to the database
 
-Пароль прописан в параметре MYSQL_ROOT_PASSWORD в mysql.env
-
-
-#### Смена реквизитов доступа к БД
-
-Меняется в файле mysql.env
+The password is registered in the MYSQL_ROOT_PASSWORD parameter in mysql.env
 
 
-#### Пример запуска фоновых задач по Cron
+#### Change of database access details
+
+Changed in mysql.env file
+
+
+#### An example of running Cron background tasks
 
 ```
 * * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-74 /srv/projects/site.test/yii api/send
@@ -152,15 +154,14 @@ make php
 #docker-compose run --rm acme acme.sh --issue -d site.ru -w /acme-challenge
 make ssl d="site.ru,www.site.ru"
 ```
-
-SSL-сертификаты сохраняются в директорию docker/nginx/ssl. Чтобы все заработало нужно раскомментировать
-строчки в конфиге docker-compose.yml
+SSL certificates are saved in the docker/nginx/ssl directory. To make it work you need to uncomment
+lines in the docker-compose.yml config
 
 ```
       # - ./docker/nginx/ssl:/etc/nginx/ssl:ro
 ```
 
-А также раскомментировать строчку
+Also uncomment the line
 
 ```
       # -"443:443"
@@ -173,7 +174,7 @@ SSL-сертификаты сохраняются в директорию docker
 02 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec nginx nginx -t && /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml restart nginx
 ```
 
-Если нужно запустить acme.sh для каких-то других целей это можно сделать данной командой:
+If you need to run acme.sh for some other purpose, you can do this with this command:
 
 ```
 make acme
