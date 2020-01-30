@@ -17,10 +17,8 @@ plogs:
 	docker-compose logs --tail=100 -f php-73 || true
 dblogs:
 	docker-compose logs --tail=100 -f db || true
-dbpass:
-	cat docker-compose.yml | grep MYSQL_ROOT_PASSWORD:
 mysql:
-	docker-compose exec php-73 mysql -uroot -hdb -p || true
+	docker-compose exec php-73 /bin/ash -c "mysql -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
 
 #make rs name=php-73
 rs:
