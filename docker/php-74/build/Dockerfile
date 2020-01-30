@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:7.3-fpm-alpine
 RUN apk add --no-cache icu-dev icu-libs icu msmtp git vim mysql-client zlib zlib-dev \
 ssmtp g++ make automake bash libpng-dev autoconf shadow libzip-dev
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
