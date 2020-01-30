@@ -1,4 +1,16 @@
-version: '3.1'
+version: '3.4'
+x-env:
+  &mysql-env
+  #MYSQL_DATABASE: web #optional
+  #MYSQL_USER: root #optional
+  MYSQL_ROOT_PASSWORD: superpass
+
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options:
+    max-file: "5"
+    max-size: "20m"
 
 services:
 
@@ -7,27 +19,18 @@ services:
     restart: unless-stopped
     #ports:
     #  - '127.0.0.1:1025:1025'
-    logging:
-        driver: "json-file"
-        options:
-            max-file: "5"
-            max-size: "20m"
+    logging: *default-logging
 
   db:
     image: mariadb
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: superpass
+    environment: *mysql-env
     volumes:
       # - ./docker/mariadb/config:/etc/mysql/conf.d:ro
       - ./db/data:/var/lib/mysql
     #ports:
     #  - '127.0.0.1:3306:3306'
-    logging:
-        driver: "json-file"
-        options:
-            max-file: "5"
-            max-size: "20m"
+    logging: *default-logging
 
   nginx:
     build: ./docker/nginx/build
@@ -45,11 +48,7 @@ services:
       # -"443:443"
       - "8025:8025"
       - "8080:8080"
-    logging:
-        driver: "json-file"
-        options:
-            max-file: "5"
-            max-size: "20m"
+    logging: *default-logging
 
   adminer:
     image: adminer
@@ -65,11 +64,7 @@ services:
   #     - ./docker/php-71/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
   #     - ./docker/php-71/composer/:/root/.composer/
   #     - ./projects/:/srv/projects/
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-file: "5"
-  #       max-size: "20m"
+  #   logging: *default-logging
 
   # php-72:
   #   build: ./docker/php-72/build
@@ -81,27 +76,20 @@ services:
   #     - ./docker/php-72/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
   #     - ./docker/php-72/composer/:/root/.composer/
   #     - ./projects/:/srv/projects/
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-file: "5"
-  #       max-size: "20m"
+  #   logging: *default-logging
 
   php-73:
     build: ./docker/php-73/build
     image: php-73
     restart: unless-stopped
+    environment: *mysql-env
     volumes:
       - ./docker/php-73/config/msmtprc:/etc/msmtprc:ro
       - ./docker/php-73/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
       - ./docker/php-73/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - ./docker/php-73/composer/:/root/.composer/
       - ./projects/:/srv/projects/
-    logging:
-        driver: "json-file"
-        options:
-            max-file: "5"
-            max-size: "20m"
+    logging: *default-logging
 
   # apache-php-71:
   #   build: ./docker/apache-php-71/build
@@ -114,11 +102,7 @@ services:
   #     - ./docker/apache-php-71/config/sites-enabled:/etc/apache2/sites-enabled:ro
   #     - ./docker/php-73/composer/:/root/.composer/
   #     - ./projects/:/srv/projects/
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-file: "5"
-  #       max-size: "20m"
+  #   logging: *default-logging
 
   # apache-php-56:
   #   build: ./docker/apache-php-56/build
@@ -131,8 +115,4 @@ services:
   #     - ./docker/apache-php-56/config/sites-enabled:/etc/apache2/sites-enabled:ro
   #     - ./docker/php-73/composer/:/root/.composer/
   #     - ./projects/:/srv/projects/
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-file: "5"
-  #       max-size: "20m"
+  #   logging: *default-logging

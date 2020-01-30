@@ -1,6 +1,13 @@
-version: '3.1'
+version: '3.4'
+x-env:
+  &mysql-env
+  #MYSQL_DATABASE: web #optional
+  #MYSQL_USER: root #optional
+  MYSQL_ROOT_PASSWORD: superpass
 
 services:
   db:
-    environment:
-      MYSQL_ROOT_PASSWORD: superpass
+    environment: *mysql-env
+
+  php-73:
+    environment: *mysql-env

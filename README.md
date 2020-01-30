@@ -124,11 +124,7 @@ make php
 
 #### Рутовый доступ к БД
 
-Пароль прописан в параметре MYSQL_ROOT_PASSWORD в docker-compose.yml
-
-```
-make dbpass
-```
+Пароль прописан в параметре MYSQL_ROOT_PASSWORD в docker-compose.yml. Может быть переопределен в файле docker-compose.override.yml.
 
 
 #### Смена реквизитов доступа к БД
