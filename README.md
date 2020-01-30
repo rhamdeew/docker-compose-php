@@ -7,6 +7,14 @@
 Для удобства управления все основные команды внесены в Makefile. Для просмотра доступных команд выполните cat Makefile.
 
 
+#### Первый запуск:
+
+```
+cp mysql.env.example mysql.env
+#edit mysql.env
+make up
+```
+
 #### Запуск:
 
 ```
@@ -124,16 +132,12 @@ make php
 
 #### Рутовый доступ к БД
 
-Пароль прописан в параметре MYSQL_ROOT_PASSWORD в docker-compose.yml. Может быть переопределен в файле docker-compose.override.yml.
+Пароль прописан в параметре MYSQL_ROOT_PASSWORD в mysql.env
 
 
 #### Смена реквизитов доступа к БД
 
-```
-cp docker-compose.override.yml.example docker-compose.override.yml
-```
-
-И меняем там реквизиты доступа.
+Меняется в файле mysql.env
 
 
 #### Пример запуска фоновых задач по Cron

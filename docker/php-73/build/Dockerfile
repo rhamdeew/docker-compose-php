@@ -1,6 +1,6 @@
-FROM php:7.4-fpm-alpine
+FROM php:7.3-fpm-alpine3.11
 RUN apk add --no-cache icu-dev icu-libs icu msmtp git vim mysql-client zlib zlib-dev \
-ssmtp g++ make automake bash libpng-dev autoconf shadow libzip-dev
+ssmtp g++ make automake bash libpng-dev autoconf shadow libzip-dev perl perl-doc wget procps ca-certificates && update-ca-certificates
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
   docker-php-ext-configure gd \
     --with-gd \
@@ -20,4 +20,10 @@ RUN wget https://github.com/composer/composer/releases/download/1.9.2/composer.p
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community gnu-libiconv
 RUN docker-php-ext-install iconv
+
+RUN wget http://mysqltuner.pl/ -O /opt/mysqltuner && \
+    wget https://raw.githubusercontent.com/major/MySQLTuner-perl/master/basic_passwords.txt -O /opt/basic_passwords.txt && \
+    wget https://raw.githubusercontent.com/major/MySQLTuner-perl/master/vulnerabilities.csv -O /opt/vulnerabilities.csv && \
+    chmod +x /opt/mysqltuner
+
 #RUN usermod -u 1050 www-data && groupmod -g 1050 www-data
