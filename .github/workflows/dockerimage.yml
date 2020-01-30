@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the stack
-      run: make upb
+      run: cp mysql.env.example mysql.env && make upb
     - name: Test DB
       run: sleep 15 && docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet db 3306
     - name: Test PHP

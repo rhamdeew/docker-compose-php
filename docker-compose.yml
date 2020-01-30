@@ -1,10 +1,4 @@
 version: '3.4'
-x-env:
-  &mysql-env
-  #MYSQL_DATABASE: web #optional
-  #MYSQL_USER: root #optional
-  MYSQL_ROOT_PASSWORD: superpass
-
 x-logging:
   &default-logging
   driver: "json-file"
@@ -24,7 +18,8 @@ services:
   db:
     image: mariadb
     restart: unless-stopped
-    environment: *mysql-env
+    env_file:
+      - mysql.env
     volumes:
       # - ./docker/mariadb/config:/etc/mysql/conf.d:ro
       - ./db/data:/var/lib/mysql
@@ -58,7 +53,8 @@ services:
     build: ./docker/php-74/build
     image: php-74
     restart: unless-stopped
-    environment: *mysql-env
+    env_file:
+      - mysql.env
     volumes:
       - ./docker/php-74/config/msmtprc:/etc/msmtprc:ro
       - ./docker/php-74/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
@@ -71,8 +67,8 @@ services:
   #   build: ./docker/php-73/build
   #   image: php-73
   #   restart: unless-stopped
-  #   environment: *mysql-env
-  #   environment: *mysql-env
+  #   env_file:
+  #     - mysql.env
   #   volumes:
   #     - ./docker/php-73/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/php-73/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
@@ -85,7 +81,8 @@ services:
   #   build: ./docker/php-72/build
   #   image: php-72
   #   restart: unless-stopped
-  #   environment: *mysql-env
+  #   env_file:
+  #     - mysql.env
   #   volumes:
   #     - ./docker/php-72/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/php-72/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
@@ -98,7 +95,8 @@ services:
   #   build: ./docker/php-71/build
   #   image: php-71
   #   restart: unless-stopped
-  #   environment: *mysql-env
+  #   env_file:
+  #     - mysql.env
   #   volumes:
   #     - ./docker/php-71/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/php-71/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
@@ -111,7 +109,8 @@ services:
   #   build: ./docker/apache-php-71/build
   #   image: apache-php-71
   #   restart: unless-stopped
-  #   environment: *mysql-env
+  #   env_file:
+  #     - mysql.env
   #   volumes:
   #     - ./docker/apache-php-71/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/apache-php-71/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
@@ -125,7 +124,8 @@ services:
   #   build: ./docker/apache-php-56/build
   #   image: apache-php-56
   #   restart: unless-stopped
-  #   environment: *mysql-env
+  #   env_file:
+  #     - mysql.env
   #   volumes:
   #     - ./docker/apache-php-56/config/msmtprc:/etc/msmtprc:ro
   #     - ./docker/apache-php-56/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
