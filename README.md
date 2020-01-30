@@ -185,3 +185,10 @@ make acme
 #docker-compose run --rm node-10 /bin/ash
 make node
 ```
+
+#### MySQL Tuner
+
+```
+#docker-compose exec php-74 /bin/ash -c "/opt/mysqltuner --user root --host db --pass superpass --forcemem 4096"
+make mysqltuner mem=4096
+```
