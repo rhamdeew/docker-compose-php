@@ -1,7 +1,7 @@
 up:
-	docker-compose up -d
+	docker-compose up -d --remove-orphans
 upb:
-	docker-compose up -d --build
+	docker-compose up -d --build --remove-orphans
 stop:
 	docker-compose stop
 st: stop
@@ -19,6 +19,10 @@ dblogs:
 	docker-compose logs --tail=100 -f db || true
 mysql:
 	docker-compose exec php-74 /bin/ash -c "mysql -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
+#make mysqltuner mem=4096 
+mysqltuner:
+	docker-compose exec php-74 /bin/ash -c "/opt/mysqltuner --user root --host db --pass \$$MYSQL_ROOT_PASSWORD --forcemem $(mem)" || true
+
 
 #make rs name=php-74
 rs:
