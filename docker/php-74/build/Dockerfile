@@ -1,18 +1,16 @@
 FROM php:7.4-fpm-alpine3.11
-RUN apk add --no-cache git vim mysql-client msmtp ssmtp perl perl-doc wget procps ca-certificates && update-ca-certificates
+RUN apk add --no-cache mysql-client msmtp perl wget procps
 
 RUN apk add --no-cache --virtual build-essentials \
     icu-dev icu-libs zlib-dev g++ make automake autoconf shadow libzip-dev \
-    libpng-dev libwebp-dev libjpeg-turbo-dev freetype-dev
-
-RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp && \
+    libpng-dev libwebp-dev libjpeg-turbo-dev freetype-dev && \
+    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-install intl && \
     docker-php-ext-install opcache && \
     docker-php-ext-install exif && \
     docker-php-ext-install zip && \
-    docker-php-ext-install iconv && \
     apk del build-essentials && rm -rf /usr/src/php*
 
 RUN wget https://github.com/composer/composer/releases/download/1.9.2/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
