@@ -1,5 +1,5 @@
 FROM php:7.2-fpm-alpine3.11
-RUN apk add --no-cache mysql-client msmtp perl wget procps
+RUN apk add --no-cache mysql-client msmtp perl wget procps shadow libzip libpng libjpeg-turbo libwebp freetype icu
 
 RUN apk add --no-cache --virtual build-essentials \
     icu-dev icu-libs zlib-dev g++ make automake autoconf shadow libzip-dev \
