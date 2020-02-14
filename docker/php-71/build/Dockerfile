@@ -1,5 +1,5 @@
 FROM php:7.1-fpm-alpine
-RUN apk add --no-cache mysql-client msmtp perl wget procps
+RUN apk add --no-cache mysql-client msmtp perl wget procps shadow libzip libpng libjpeg-turbo libwebp freetype icu
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community gnu-libiconv && \

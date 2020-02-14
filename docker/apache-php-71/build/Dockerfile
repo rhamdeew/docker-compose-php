@@ -1,6 +1,7 @@
 FROM php:7.1-apache
 RUN apt-get update && \
-    apt-get -y install libmcrypt-dev libicu-dev libpng-dev libjpeg-dev libfreetype6-dev libxpm-dev wget mariadb-client msmtp && \
+    apt-get -y install libmcrypt4 libfreetype6 libjpeg62-turbo libpng16-16 libxpm4 wget mariadb-client msmtp && \
+    apt-get -y install libmcrypt-dev libicu-dev libpng-dev libjpeg-dev libfreetype6-dev libxpm-dev && \
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-install mcrypt && \
     docker-php-ext-install opcache && \
