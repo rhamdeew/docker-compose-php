@@ -51,9 +51,9 @@ make logs name=php-74
 
 #### After launch, services are available at:
 
-http://localhost:8025 - mailhog (demo:demo)
+http://localhost:8025 - mailhog (super:demo)
 
-http://localhost:8080 - adminer (demo:demo)
+http://localhost:8080 - adminer (super:demo)
 
 http://site.test - тестовый сайт (необходимо прописать этот хост в hosts)
 
@@ -63,7 +63,7 @@ http://site.test - тестовый сайт (необходимо пропис�
 ### Fine tuning
 
 
-#### Change login/password super: demo
+#### Change login/password super:demo
 
 Open docker/nginx/.htpasswd and replace its contents.
 
