@@ -49,9 +49,9 @@ make logs name=php-74
 
 #### После запуска сервисы доступны по адресам:
 
-http://localhost:8025 - mailhog (demo:demo)
+http://localhost:8025 - mailhog (super:demo)
 
-http://localhost:8080 - adminer (demo:demo)
+http://localhost:8080 - adminer (super:demo)
 
 http://site.test - тестовый сайт (необходимо прописать этот хост в hosts)
 
