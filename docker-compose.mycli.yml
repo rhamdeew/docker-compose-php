@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+
+  mycli:
+    build: ./docker/mycli/build
+    env_file:
+      - mysql.env
+
