@@ -119,8 +119,15 @@ There are examples of Nginx config files in docker/nginx/config/disabled/
 #### Connect to the database from the console
 
 ```
-#docker-compose exec php-74 /bin/ash и затем mysql --host=db -u<юзер> -p<пароль>
+#docker-compose exec php-74 /bin/ash and run: mysql --host=db -uroot -hdb -p$MYSQL_ROOT_PASSWORD
 make mysql
+```
+
+Better option with [mycli](https://github.com/dbcli/mycli)
+
+```
+#docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
+make mycli
 ```
 
 
