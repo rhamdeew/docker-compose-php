@@ -121,6 +121,13 @@ make st upb
 make mysql
 ```
 
+Более удобный вариант с использованием [mycli](https://github.com/dbcli/mycli)
+
+```
+#docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
+make mycli
+```
+
 
 #### Запускать php-скрипты из консоли
 
