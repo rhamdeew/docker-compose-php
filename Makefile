@@ -48,3 +48,6 @@ acme:
 
 node:
 	docker-compose -f docker-compose.node.yml run --rm node-10 /bin/ash || true
+
+mycli:
+	docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
