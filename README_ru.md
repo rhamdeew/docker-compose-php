@@ -2,6 +2,14 @@
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
+
+### Скринкаст на YouTube
+
+Разворачиваем Wordpress
+
+[![](http://img.youtube.com/vi/_1DKwP7YuTY/0.jpg)](http://www.youtube.com/watch?v=_1DKwP7YuTY "")
+
+
 ### Управление
 
 Для удобства управления все основные команды внесены в Makefile. Для просмотра доступных команд выполните cat Makefile.
