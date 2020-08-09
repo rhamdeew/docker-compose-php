@@ -133,7 +133,7 @@ There are examples of Nginx config files in docker/nginx/config/disabled/
 #### Connect to the database from the console
 
 ```
-#docker-compose -f utils/docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
+#docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
 make mycli
 ```
 
@@ -165,7 +165,7 @@ Changed in mysql.env file
 #### Acme.sh
 
 ```
-#docker-compose -f utils/docker-compose.acme.yml run --rm acme acme.sh --issue -d `echo $(d) | sed 's/,/ \-d /g'` -w /acme-challenge
+#docker-compose -f docker-compose.acme.yml run --rm acme acme.sh --issue -d `echo $(d) | sed 's/,/ \-d /g'` -w /acme-challenge
 make ssl d="site.ru,www.site.ru"
 ```
 SSL certificates are saved in the docker/nginx/ssl directory. To make it work you need to uncomment
@@ -184,7 +184,7 @@ Also uncomment the line
 *crontab*
 
 ```
-00 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/utils/docker-compose.acme.yml run --rm acme acme.sh --cron
+00 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.acme.yml run --rm acme acme.sh --cron
 02 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec nginx nginx -t && /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml restart nginx
 ```
 
@@ -197,13 +197,13 @@ make acme
 #### Node.js
 
 ```
-#docker-compose -f utils/docker-compose.node.yml run --rm node-10 /bin/ash || true
+#docker-compose -f docker-compose.node.yml run --rm node-10 /bin/ash || true
 make node
 ```
 
 #### MySQL Tuner
 
 ```
-#docker-compose -f utils/docker-compose.mysqltuner.yml run --rm mysqltuner /bin/ash -c "/opt/mysqltuner --user root --host db --pass \$$MYSQL_ROOT_PASSWORD --forcemem $(mem)" || true
+#docker-compose -f docker-compose.mysqltuner.yml run --rm mysqltuner /bin/ash -c "/opt/mysqltuner --user root --host db --pass \$$MYSQL_ROOT_PASSWORD --forcemem $(mem)" || true
 make mysqltuner mem=4096
 ```
