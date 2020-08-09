@@ -49,16 +49,16 @@ services:
     image: adminer
     restart: unless-stopped
 
-  php-74:
-    build: ./docker/php-74/build
-    image: php-74
+  php-71:
+    build: ./docker/php-71/build
+    image: php-71
     restart: unless-stopped
     env_file:
       - mysql.env
     volumes:
-      - ./docker/php-74/config/msmtprc:/etc/msmtprc:ro
-      - ./docker/php-74/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
-      - ./docker/php-74/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-      - ./docker/php-74/composer/:/root/.composer/
+      - ./docker/php-71/config/msmtprc:/etc/msmtprc:ro
+      - ./docker/php-71/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
+      - ./docker/php-71/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ./docker/php-71/composer/:/root/.composer/
       - ./projects/:/srv/projects/
     logging: *default-logging

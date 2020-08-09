@@ -21,9 +21,6 @@ server {
         try_files $uri = 404;
         include fastcgi_params;
         fastcgi_pass  php-74:9000;
-        # fastcgi_pass  php-73:9000;
-        # fastcgi_pass  php-72:9000;
-        # fastcgi_pass  php-71:9000;
         fastcgi_index index.php;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         fastcgi_param  SERVER_NAME    $host;
@@ -34,15 +31,5 @@ server {
         try_files $uri $uri/ /index.php?$args;
     }
 
-    ######################################
-    # Apache config
-    ######################################
-    # location / {
-    #     proxy_pass http://apache-php-56;
-    #     # proxy_pass http://apache-php-71;
-    #     proxy_set_header Host $host;
-    #     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    #     proxy_set_header X-Real-IP $remote_addr;
-    # }
     include conf.d/includes/assets.inc;
 }

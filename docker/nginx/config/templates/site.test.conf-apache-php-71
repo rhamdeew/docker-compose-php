@@ -2,7 +2,7 @@ server {
     listen 80;
 
     #имя сервера:
-    server_name _;
+    server_name site.test;
 
     # корневая директория
     root /srv/projects/site.test;
@@ -15,21 +15,13 @@ server {
     auth_basic_user_file    .htpasswd;
 
     ######################################
-    # FPM config
+    # Apache config
     ######################################
-    location ~ \.php$ {
-        try_files $uri = 404;
-        include fastcgi_params;
-        fastcgi_pass  php-74:9000;
-        fastcgi_index index.php;
-        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-        fastcgi_param  SERVER_NAME    $host;
-    }
-
     location / {
-        index  index.php index.html index.htm;
-        try_files $uri $uri/ /index.php?$args;
+        proxy_pass http://apache-php-71;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
     }
-
     include conf.d/includes/assets.inc;
 }
