@@ -2,7 +2,7 @@
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
-[Readme на русском](README_ru.md)
+[Russian Readme](README_ru.md)
 
 ### Management
 
@@ -55,10 +55,9 @@ http://localhost:8025 - mailhog (super:demo)
 
 http://localhost:8080 - adminer (super:demo)
 
-http://site.test - тестовый сайт (необходимо прописать этот хост в hosts)
+http://site.test - test site (you need to add site.test to /etc/hosts)
 
-*В настройках подключения к БД нужно прописать хост db*
-
+*Database host  - db*
 
 ### Fine tuning
 
