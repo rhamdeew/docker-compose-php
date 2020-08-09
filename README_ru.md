@@ -20,6 +20,21 @@
 ```
 cp mysql.env.example mysql.env
 #edit mysql.env
+
+#вы можете выбрать версию PHP
+cp templates/docker-compose-php-74.yml docker-compose.yml
+
+#и скопировать соответствующий конфиг для Nginx + PHP-FPM
+cp docker/nginx/config/templates/site.test.conf-php-74 docker/nginx/config/site.test.conf
+
+#или скопировать соответствующие конфиги для Nginx + Apache PHP
+cp templates/docker-compose-apache-php-71.yml docker-compose.yml
+cp docker/nginx/config/templates/site.test.conf-apache-php-71 docker/nginx/config/site.test.conf
+cp docker/apache-php-71/config/templates/site.test.conf docker/apache-php-71/config/sites-enabled/site.test.conf
+
+mkdir -p projects/site.test
+echo '<?php echo phpversion();' > projects/site.test/index.php
+
 make up
 ```
 
@@ -115,7 +130,7 @@ make st upb
 
 #### Добавление нового хоста
 
-Достаточно скопировать конфиг docker/nginx/config/site.test.conf и немного его подправить.
+Достаточно скопировать шаблон конфига docker/nginx/config/templates/site.test.conf и немного его подправить.
 
 В случае с использованием контейнера с apache необходимо также поправить конфиг docker/apache-php-56/config/sites-enabled/site.test.conf
 
@@ -125,14 +140,7 @@ make st upb
 #### Подключиться к БД с консоли
 
 ```
-#docker-compose exec php-74 /bin/ash и затем mysql --host=db -u<юзер> -p<пароль>
-make mysql
-```
-
-Более удобный вариант с использованием [mycli](https://github.com/dbcli/mycli)
-
-```
-#docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
+#docker-compose -f utils/docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
 make mycli
 ```
 
@@ -140,8 +148,8 @@ make mycli
 #### Запускать php-скрипты из консоли
 
 ```
-#docker-compose exec php-74 /bin/ash
-make php
+#docker-compose exec $(name) /bin/sh || true
+make exec name=php-74
 ```
 
 
@@ -164,7 +172,7 @@ make php
 #### Acme.sh
 
 ```
-#docker-compose run --rm acme acme.sh --issue -d site.ru -w /acme-challenge
+#docker-compose -f utils/docker-compose.acme.yml run --rm acme acme.sh --issue -d `echo $(d) | sed 's/,/ \-d /g'` -w /acme-challenge
 make ssl d="site.ru,www.site.ru"
 ```
 
@@ -184,7 +192,7 @@ SSL-сертификаты сохраняются в директорию docker
 *crontab*
 
 ```
-00 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.acme.yml run --rm acme acme.sh --cron
+00 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/utils/docker-compose.acme.yml run --rm acme acme.sh --cron
 02 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec nginx nginx -t && /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml restart nginx
 ```
 
@@ -197,13 +205,13 @@ make acme
 #### Node.js
 
 ```
-#docker-compose run --rm node-10 /bin/ash
+#docker-compose -f utils/docker-compose.node.yml run --rm node-10 /bin/ash || true
 make node
 ```
 
 #### MySQL Tuner
 
 ```
-#docker-compose exec php-74 /bin/ash -c "/opt/mysqltuner --user root --host db --pass superpass --forcemem 4096"
+#docker-compose -f utils/docker-compose.mysqltuner.yml run --rm mysqltuner /bin/ash -c "/opt/mysqltuner --user root --host db --pass \$$MYSQL_ROOT_PASSWORD --forcemem $(mem)" || true
 make mysqltuner mem=4096
 ```

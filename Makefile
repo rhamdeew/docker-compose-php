@@ -13,15 +13,11 @@ logs:
 	docker-compose logs --tail=100 -f $(name) || true
 nlogs:
 	docker-compose logs --tail=100 -f nginx || true
-plogs:
-	docker-compose logs --tail=100 -f php-74 || true
 dblogs:
 	docker-compose logs --tail=100 -f db || true
-mysql:
-	docker-compose exec php-74 /bin/ash -c "mysql -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
 #make mysqltuner mem=4096
 mysqltuner:
-	docker-compose exec php-74 /bin/ash -c "/opt/mysqltuner --user root --host db --pass \$$MYSQL_ROOT_PASSWORD --forcemem $(mem)" || true
+	docker-compose -f docker-compose.mysqltuner.yml run --rm mysqltuner /bin/ash -c "/opt/mysqltuner --user root --host db --pass \$$MYSQL_ROOT_PASSWORD --forcemem $(mem)" || true
 
 
 #make rs name=php-74
@@ -34,10 +30,6 @@ nrs:
 exec:
 	docker-compose exec $(name) /bin/sh || true
 ex: exec
-
-php:
-	docker-compose exec php-74 /bin/ash || true
-pex: php
 
 #make ssl d="site.ru,www.site.ru"
 ssl:

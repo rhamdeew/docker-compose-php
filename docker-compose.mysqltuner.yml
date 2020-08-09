@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+
+  mysqltuner:
+    build: ./docker/mysqltuner/build
+    env_file:
+      - mysql.env
+

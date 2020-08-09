@@ -14,6 +14,21 @@ For ease of management, all basic commands are included in the Makefile. To list
 ```
 cp mysql.env.example mysql.env
 #edit mysql.env
+
+#you can choose the template with specific php version
+cp templates/docker-compose-php-74.yml docker-compose.yml
+
+#and copy specific config for Nginx + PHP-FPM
+cp docker/nginx/config/templates/site.test.conf-php-74 docker/nginx/config/site.test.conf
+
+#or copy configs for Nginx + Apache PHP
+cp templates/docker-compose-apache-php-71.yml docker-compose.yml
+cp docker/nginx/config/templates/site.test.conf-apache-php-71 docker/nginx/config/site.test.conf
+cp docker/apache-php-71/config/templates/site.test.conf docker/apache-php-71/config/sites-enabled/site.test.conf
+
+mkdir -p projects/site.test
+echo '<?php echo phpversion();' > projects/site.test/index.php
+
 make up
 ```
 
@@ -57,7 +72,7 @@ http://localhost:8080 - adminer (super:demo)
 
 http://site.test - test site (you need to add site.test to /etc/hosts)
 
-*Database host  - db*
+*Database host - db*
 
 ### Fine tuning
 
@@ -108,7 +123,7 @@ Also do not forget to tweak Apache configs.
 
 #### Adding a new host
 
-Just copy config docker/nginx/config/site.test.conf and tweak it.
+Just copy config docker/nginx/config/templates/site.test.conf* and tweak it.
 
 In the case of using the container with apache, you must also fix the docker/apache-php-56/config/sites-enabled/site.test.conf config.
 
@@ -118,14 +133,7 @@ There are examples of Nginx config files in docker/nginx/config/disabled/
 #### Connect to the database from the console
 
 ```
-#docker-compose exec php-74 /bin/ash and run: mysql --host=db -uroot -hdb -p$MYSQL_ROOT_PASSWORD
-make mysql
-```
-
-Better option with [mycli](https://github.com/dbcli/mycli)
-
-```
-#docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
+#docker-compose -f utils/docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
 make mycli
 ```
 
@@ -133,8 +141,8 @@ make mycli
 #### Run php scripts from the console
 
 ```
-#docker-compose exec php-74 /bin/ash
-make php
+#docker-compose exec $(name) /bin/sh || true
+make exec name=php-74
 ```
 
 
@@ -157,7 +165,7 @@ Changed in mysql.env file
 #### Acme.sh
 
 ```
-#docker-compose run --rm acme acme.sh --issue -d site.ru -w /acme-challenge
+#docker-compose -f utils/docker-compose.acme.yml run --rm acme acme.sh --issue -d `echo $(d) | sed 's/,/ \-d /g'` -w /acme-challenge
 make ssl d="site.ru,www.site.ru"
 ```
 SSL certificates are saved in the docker/nginx/ssl directory. To make it work you need to uncomment
@@ -176,7 +184,7 @@ Also uncomment the line
 *crontab*
 
 ```
-00 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.acme.yml run --rm acme acme.sh --cron
+00 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/utils/docker-compose.acme.yml run --rm acme acme.sh --cron
 02 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec nginx nginx -t && /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml restart nginx
 ```
 
@@ -189,13 +197,13 @@ make acme
 #### Node.js
 
 ```
-#docker-compose run --rm node-10 /bin/ash
+#docker-compose -f utils/docker-compose.node.yml run --rm node-10 /bin/ash || true
 make node
 ```
 
 #### MySQL Tuner
 
 ```
-#docker-compose exec php-74 /bin/ash -c "/opt/mysqltuner --user root --host db --pass superpass --forcemem 4096"
+#docker-compose -f utils/docker-compose.mysqltuner.yml run --rm mysqltuner /bin/ash -c "/opt/mysqltuner --user root --host db --pass \$$MYSQL_ROOT_PASSWORD --forcemem $(mem)" || true
 make mysqltuner mem=4096
 ```

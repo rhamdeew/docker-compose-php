@@ -14,11 +14,6 @@ RUN apk add --no-cache --virtual build-essentials \
     docker-php-ext-install zip && \
     apk del build-essentials && rm -rf /usr/src/php*
 
-RUN wget https://github.com/composer/composer/releases/download/1.9.2/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
-
-RUN wget http://mysqltuner.pl/ -O /opt/mysqltuner && \
-    wget https://raw.githubusercontent.com/major/MySQLTuner-perl/master/basic_passwords.txt -O /opt/basic_passwords.txt && \
-    wget https://raw.githubusercontent.com/major/MySQLTuner-perl/master/vulnerabilities.csv -O /opt/vulnerabilities.csv && \
-    chmod +x /opt/mysqltuner
+RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
 #RUN usermod -u 1050 www-data && groupmod -g 1050 www-data
