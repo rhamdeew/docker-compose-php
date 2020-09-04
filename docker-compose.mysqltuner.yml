@@ -4,6 +4,8 @@ services:
 
   mysqltuner:
     build: ./docker/mysqltuner/build
+    volumes:
+     - ./projects:/srv/projects
     env_file:
       - mysql.env
 
