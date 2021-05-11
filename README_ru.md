@@ -1,4 +1,4 @@
-## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0 FPM + Apache mod-php 5.6/7.1
+## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0 FPM + Apache mod-php 5.6/7.1
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
@@ -10,14 +10,45 @@
 [![](http://img.youtube.com/vi/_1DKwP7YuTY/0.jpg)](http://www.youtube.com/watch?v=_1DKwP7YuTY "")
 
 
-### Управление
-
-Для удобства управления все основные команды внесены в Makefile. Для просмотра доступных команд выполните cat Makefile.
-
 
 #### Первый запуск:
 
+##### 1. Отредактируйте /etc/hosts
+
 ```
+sudo vim /etc/hosts
+```
+
+и добавьте
+
+```
+127.0.0.1    site.test
+```
+
+##### 2. Запустите следующие команды
+
+```
+cp mysql.env.example mysql.env
+cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.test.conf
+mkdir -p projects/site.test
+echo '<?php echo phpversion();' > projects/site.test/index.php
+make up
+```
+
+##### 3. Протестируйте запущенные сервисы
+
+http://localhost:8025 - mailhog (super:demo)
+
+http://localhost:8080 - adminer (super:demo)
+
+http://site.test - тестовый сайт
+
+*В настройках подключения к БД нужно прописать хост db*
+
+<details>
+  <summary>Варианты запуска</summary>
+
+  ```
 cp mysql.env.example mysql.env
 #edit mysql.env
 
@@ -27,7 +58,7 @@ cp templates/docker-compose-php-8.yml docker-compose.yml
 #и скопировать соответствующий конфиг для Nginx + PHP-FPM
 cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.test.conf
 
-#или скопировать соответствующие конфиги для Nginx + Apache PHP
+#or copy configs for Nginx + Apache PHP
 cp templates/docker-compose-apache-php-71.yml docker-compose.yml
 cp docker/nginx/config/templates/site.test.conf-apache-php-71 docker/nginx/config/site.test.conf
 cp docker/apache-php-71/config/templates/site.test.conf docker/apache-php-71/config/sites-enabled/site.test.conf
@@ -36,7 +67,15 @@ mkdir -p projects/site.test
 echo '<?php echo phpversion();' > projects/site.test/index.php
 
 make up
-```
+  ```
+
+</details>
+
+------
+
+### Управление
+
+Для удобства управления все основные команды внесены в Makefile. Для просмотра доступных команд выполните cat Makefile.
 
 #### Запуск:
 
@@ -68,17 +107,6 @@ make ps
 #docker-compose logs -tail=100 -f (php-8|db|mailhog|nginx)
 make logs name=php-8
 ```
-
-
-#### После запуска сервисы доступны по адресам:
-
-http://localhost:8025 - mailhog (super:demo)
-
-http://localhost:8080 - adminer (super:demo)
-
-http://site.test - тестовый сайт (необходимо прописать этот хост в hosts)
-
-*В настройках подключения к БД нужно прописать хост db*
 
 
 ### Тонкая настройка
