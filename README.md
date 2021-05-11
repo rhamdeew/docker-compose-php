@@ -1,17 +1,48 @@
-## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0 FPM + Apache mod-php 5.6/7.1
+## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0 FPM + Apache mod-php 5.6/7.1
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
 [Russian Readme](README_ru.md)
 
-### Management
+### First local run:
 
-For ease of management, all basic commands are included in the Makefile. To list the available commands, run cat Makefile.
+All you have to do is run these commands:
 
-
-#### First run:
+##### 1. Edit your /etc/hosts
 
 ```
+sudo vim /etc/hosts
+```
+
+and add
+
+```
+127.0.0.1    site.test
+```
+
+##### 2. Run these commands
+
+```
+cp mysql.env.example mysql.env
+cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.test.conf
+mkdir -p projects/site.test
+echo '<?php echo phpversion();' > projects/site.test/index.php
+make up
+```
+
+##### 3. Test running services
+
+http://localhost:8025 - mailhog (super:demo)
+
+http://localhost:8080 - adminer (super:demo)
+
+http://site.test - test site
+
+<details>
+  <summary>Options</summary>
+
+
+  ```
 cp mysql.env.example mysql.env
 #edit mysql.env
 
@@ -30,7 +61,17 @@ mkdir -p projects/site.test
 echo '<?php echo phpversion();' > projects/site.test/index.php
 
 make up
-```
+  ```
+
+</details>
+
+
+
+------
+
+### Management
+
+For ease of management, all basic commands are included in the Makefile. To list the available commands, run cat Makefile.
 
 #### Run:
 
@@ -62,15 +103,6 @@ make ps
 #docker-compose logs -tail=100 -f (php-8|db|mailhog|nginx)
 make logs name=php-8
 ```
-
-
-#### After launch, services are available at:
-
-http://localhost:8025 - mailhog (super:demo)
-
-http://localhost:8080 - adminer (super:demo)
-
-http://site.test - test site (you need to add site.test to /etc/hosts)
 
 *Database host - db*
 
@@ -129,6 +161,22 @@ In the case of using the container with apache, you must also fix the docker/apa
 
 There are examples of Nginx config files in docker/nginx/config/disabled/
 
+#### Connect to the database from the console
+
+```
+make php
+mysql -uroot -hdb -pMYSQL_ROOT_PASSWORD
+```
+
+Example with importing SQL-dump:
+
+```
+make php
+mysql -uroot -hdb -pMYSQL_ROOT_PASSWORD
+> create database test;
+
+mysql -uroot -hdb -pMYSQL_ROOT_PASSWORD test < dump.sql
+```
 
 #### Connect to the database from the console
 
@@ -136,7 +184,6 @@ There are examples of Nginx config files in docker/nginx/config/disabled/
 #docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
 make mycli
 ```
-
 
 #### Run php scripts from the console
 
@@ -168,6 +215,7 @@ Changed in mysql.env file
 #docker-compose -f docker-compose.acme.yml run --rm acme acme.sh --issue -d `echo $(d) | sed 's/,/ \-d /g'` -w /acme-challenge
 make ssl d="site.ru,www.site.ru"
 ```
+
 SSL certificates are saved in the docker/nginx/ssl directory. To make it work you need to uncomment
 lines in the docker-compose.yml config
 
