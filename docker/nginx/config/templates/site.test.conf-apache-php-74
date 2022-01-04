@@ -1,0 +1,27 @@
+server {
+    listen 80;
+
+    #имя сервера:
+    server_name site.test;
+
+    # корневая директория
+    root /srv/projects/site.test;
+    include conf.d/includes/restrictions.inc;
+
+    satisfy  any;
+    allow 192.168.1.0/24;
+    deny all;
+    auth_basic              "Restricted";
+    auth_basic_user_file    .htpasswd;
+
+    ######################################
+    # Apache config
+    ######################################
+    location / {
+        proxy_pass http://apache-php-74;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    include conf.d/includes/assets.inc;
+}
