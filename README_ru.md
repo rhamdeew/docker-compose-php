@@ -35,6 +35,33 @@ echo '<?php echo phpversion();' > projects/site.test/index.php
 make up
 ```
 
+<details>
+  <summary>Другие варианты запуска</summary>
+
+  ```
+cp mysql.env.example mysql.env
+#edit mysql.env
+
+#вы можете выбрать версию PHP
+cp templates/docker-compose-php-8.yml docker-compose.yml
+
+  
+#и скопировать соответствующий конфиг для Nginx + PHP-FPM
+cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.test.conf
+
+#или скопировать соответствующие конфиги для варианта Nginx + Apache PHP
+cp templates/docker-compose-apache-php-71.yml docker-compose.yml
+cp docker/nginx/config/templates/site.test.conf-apache-php-71 docker/nginx/config/site.test.conf
+cp docker/apache-php-71/config/templates/site.test.conf docker/apache-php-71/config/sites-enabled/site.test.conf
+
+  
+mkdir -p projects/site.test
+echo '<?php echo phpversion();' > projects/site.test/index.php
+
+make up
+  ```
+</details>
+
 ##### 3. Протестируйте запущенные сервисы
 
 http://localhost:8025 - mailhog (super:demo)
@@ -44,32 +71,6 @@ http://localhost:8080 - adminer (super:demo)
 http://site.test - тестовый сайт
 
 *В настройках подключения к БД нужно прописать хост db*
-
-<details>
-  <summary>Варианты запуска</summary>
-
-  ```
-cp mysql.env.example mysql.env
-#edit mysql.env
-
-#вы можете выбрать версию PHP
-cp templates/docker-compose-php-8.yml docker-compose.yml
-
-#и скопировать соответствующий конфиг для Nginx + PHP-FPM
-cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.test.conf
-
-#or copy configs for Nginx + Apache PHP
-cp templates/docker-compose-apache-php-71.yml docker-compose.yml
-cp docker/nginx/config/templates/site.test.conf-apache-php-71 docker/nginx/config/site.test.conf
-cp docker/apache-php-71/config/templates/site.test.conf docker/apache-php-71/config/sites-enabled/site.test.conf
-
-mkdir -p projects/site.test
-echo '<?php echo phpversion();' > projects/site.test/index.php
-
-make up
-  ```
-
-</details>
 
 ------
 
@@ -114,7 +115,7 @@ make logs name=php-8
 
 #### Смена логина/пароля super:demo
 
-Открываем docker/nginx/.htpasswd и заменяем его содержимое
+Открываем `docker/nginx/.htpasswd` и заменяем его содержимое
 
 
 #### Права на файлы как у хостового юзера
@@ -126,7 +127,7 @@ make logs name=php-8
 #RUN usermod -u 1050 www-data && groupmod -g 1050 www-data
 ```
 
-В docker/*php*/build/Dockerfile и заменяем там 1050 на свои идентификаторы.
+В `docker/php-8/build/Dockerfile` и заменяем там 1050 на свои идентификаторы.
 Запускаем все с ребилдом
 
 ```
@@ -137,13 +138,13 @@ make upb
 
 #### Настройки php.ini
 
-Открываем docker/php-8/config/php.ini
+Открываем `docker/php-8/config/php.ini`
 Или же редактируем настройки php-fpm - www.conf
 
 
 #### Переключение версии php
 
-Раскомменчиваем в docker-compose.yml блок с контейнером необходимой версии php.
+Раскомменчиваем в `docker-compose.yml` блок с контейнером необходимой версии php.
 
 В конфиге Nginx для сайта закомменчиваем старый апстрим и раскомменчиваем новый.
 
@@ -158,11 +159,11 @@ make st upb
 
 #### Добавление нового хоста
 
-Достаточно скопировать шаблон конфига docker/nginx/config/templates/site.test.conf и немного его подправить.
+Достаточно скопировать шаблон конфига `docker/nginx/config/templates/site.test.conf` и немного его подправить.
 
-В случае с использованием контейнера с apache необходимо также поправить конфиг docker/apache-php-56/config/sites-enabled/site.test.conf
+В случае с использованием контейнера с apache необходимо также поправить конфиг `docker/apache-php-56/config/sites-enabled/site.test.conf`
 
-Есть примеры конфигов для Nginx в docker/nginx/config/disabled/
+Есть примеры конфигов для Nginx в `docker/nginx/config/disabled/`
 
 
 #### Подключиться к БД с консоли
@@ -204,8 +205,8 @@ make exec name=php-8
 make ssl d="site.ru,www.site.ru"
 ```
 
-SSL-сертификаты сохраняются в директорию docker/nginx/ssl. Чтобы все заработало нужно раскомментировать
-строчки в конфиге docker-compose.yml
+SSL-сертификаты сохраняются в директорию `docker/nginx/ssl`. Чтобы все заработало нужно раскомментировать
+строчки в конфиге `docker-compose.yml`
 
 ```
       # - ./docker/nginx/ssl:/etc/nginx/ssl:ro
@@ -224,7 +225,7 @@ SSL-сертификаты сохраняются в директорию docker
 02 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec -T nginx nginx -t -q && /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml restart nginx
 ```
 
-Если нужно запустить acme.sh для каких-то других целей это можно сделать данной командой:
+Если нужно запустить `acme.sh` для каких-то других целей это можно сделать данной командой:
 
 ```
 make acme

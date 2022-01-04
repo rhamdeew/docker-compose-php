@@ -30,16 +30,8 @@ echo '<?php echo phpversion();' > projects/site.test/index.php
 make up
 ```
 
-##### 3. Test running services
-
-http://localhost:8025 - mailhog (super:demo)
-
-http://localhost:8080 - adminer (super:demo)
-
-http://site.test - test site
-
 <details>
-  <summary>Options</summary>
+  <summary>Another options</summary>
 
 
   ```
@@ -49,6 +41,7 @@ cp mysql.env.example mysql.env
 #you can choose the template with specific php version
 cp templates/docker-compose-php-8.yml docker-compose.yml
 
+
 #and copy specific config for Nginx + PHP-FPM
 cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.test.conf
 
@@ -56,6 +49,7 @@ cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.t
 cp templates/docker-compose-apache-php-74.yml docker-compose.yml
 cp docker/nginx/config/templates/site.test.conf-apache-php-74 docker/nginx/config/site.test.conf
 cp docker/apache-php-74/config/templates/site.test.conf docker/apache-php-74/config/sites-enabled/site.test.conf
+
 
 mkdir -p projects/site.test
 echo '<?php echo phpversion();' > projects/site.test/index.php
@@ -65,7 +59,13 @@ make up
 
 </details>
 
+##### 3. Test running services
 
+http://localhost:8025 - mailhog (super:demo)
+
+http://localhost:8080 - adminer (super:demo)
+
+http://site.test - test site
 
 ------
 
@@ -111,7 +111,7 @@ make logs name=php-8
 
 #### Change login/password super:demo
 
-Open docker/nginx/.htpasswd and replace its contents.
+Open `docker/nginx/.htpasswd` and replace its contents.
 
 
 #### Host user permissions
@@ -123,7 +123,7 @@ Then uncomment the line
 #RUN usermod -u 1050 www-data && groupmod -g 1050 www-data
 ```
 
-In docker /*php*/build/Dockerfile and replace 1050 with your identifiers there.
+In `docker/php-8/build/Dockerfile` and replace id 1050 with your identifiers there.
 We start containers with a rebuild
 
 ```
@@ -134,7 +134,7 @@ make upb
 
 #### php.ini settings
 
-Open docker/php-8/config/php.ini
+Open `docker/php-8/config/php.ini`
 Or edit the php-fpm settings - www.conf
 
 
@@ -155,11 +155,11 @@ Also do not forget to tweak Apache configs.
 
 #### Adding a new host
 
-Just copy config docker/nginx/config/templates/site.test.conf* and tweak it.
+Just copy config `docker/nginx/config/templates/site.test.conf` and tweak it.
 
-In the case of using the container with apache, you must also fix the docker/apache-php-56/config/sites-enabled/site.test.conf config.
+In the case of using the container with apache, you must also fix the `docker/apache-php-56/config/sites-enabled/site.test.conf` config.
 
-There are examples of Nginx config files in docker/nginx/config/disabled/
+There are examples of Nginx config files in `docker/nginx/config/disabled/`
 
 #### Connect to the database from the console
 
@@ -216,8 +216,8 @@ Changed in mysql.env file
 make ssl d="site.ru,www.site.ru"
 ```
 
-SSL certificates are saved in the docker/nginx/ssl directory. To make it work you need to uncomment
-lines in the docker-compose.yml config
+SSL certificates are saved in the `docker/nginx/ssl directory`. To make it work you need to uncomment
+lines in the `docker-compose.yml` config
 
 ```
       # - ./docker/nginx/ssl:/etc/nginx/ssl:ro
@@ -236,7 +236,7 @@ Also uncomment the line
 02 3 * * * /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec -T nginx nginx -t -q && /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml restart nginx
 ```
 
-If you need to run acme.sh for some other purpose, you can do this with this command:
+If you need to run `acme.sh` for some other purpose, you can do this with this command:
 
 ```
 make acme
