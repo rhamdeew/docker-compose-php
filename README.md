@@ -1,4 +1,4 @@
-## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0 FPM + Apache mod-php 5.6/7.1
+## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0 FPM + Apache mod-php 5.6/7.1/7.4
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
@@ -53,9 +53,9 @@ cp templates/docker-compose-php-8.yml docker-compose.yml
 cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.test.conf
 
 #or copy configs for Nginx + Apache PHP
-cp templates/docker-compose-apache-php-71.yml docker-compose.yml
-cp docker/nginx/config/templates/site.test.conf-apache-php-71 docker/nginx/config/site.test.conf
-cp docker/apache-php-71/config/templates/site.test.conf docker/apache-php-71/config/sites-enabled/site.test.conf
+cp templates/docker-compose-apache-php-74.yml docker-compose.yml
+cp docker/nginx/config/templates/site.test.conf-apache-php-74 docker/nginx/config/site.test.conf
+cp docker/apache-php-74/config/templates/site.test.conf docker/apache-php-74/config/sites-enabled/site.test.conf
 
 mkdir -p projects/site.test
 echo '<?php echo phpversion();' > projects/site.test/index.php
