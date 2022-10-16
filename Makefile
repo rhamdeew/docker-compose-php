@@ -8,7 +8,7 @@ st: stop
 ps:
 	docker-compose ps
 
-#make logs name=php-8
+#make logs name=php-81
 logs:
 	docker-compose logs --tail=100 -f $(name) || true
 nlogs:
@@ -17,13 +17,13 @@ dblogs:
 	docker-compose logs --tail=100 -f db || true
 
 
-#make rs name=php-8
+#make rs name=php-81
 rs:
 	docker-compose restart $(name)
 nrs:
 	docker-compose restart nginx
 
-#make exec name=php-8
+#make exec name=php-81
 exec:
 	docker-compose exec $(name) /bin/sh || true
 ex: exec

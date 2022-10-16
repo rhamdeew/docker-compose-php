@@ -1,4 +1,4 @@
-## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0 FPM + Apache mod-php 5.6/7.1/7.4
+## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0/8.1 FPM + Apache mod-php 5.6/7.1/7.4
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
@@ -29,7 +29,7 @@ sudo vim /etc/hosts
 
 ```
 cp mysql.env.example mysql.env
-cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.test.conf
+cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/site.test.conf
 mkdir -p projects/site.test
 echo '<?php echo phpversion();' > projects/site.test/index.php
 make up
@@ -43,11 +43,11 @@ cp mysql.env.example mysql.env
 #edit mysql.env
 
 #вы можете выбрать версию PHP
-cp templates/docker-compose-php-8.yml docker-compose.yml
+cp templates/docker-compose-php-81.yml docker-compose.yml
 
   
 #и скопировать соответствующий конфиг для Nginx + PHP-FPM
-cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/site.test.conf
+cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/site.test.conf
 
 #или скопировать соответствующие конфиги для варианта Nginx + Apache PHP
 cp templates/docker-compose-apache-php-74.yml docker-compose.yml
@@ -105,8 +105,8 @@ make ps
 #### Просмотр логов контейнера
 
 ```
-#docker-compose logs -tail=100 -f (php-8|db|mailhog|nginx)
-make logs name=php-8
+#docker-compose logs -tail=100 -f (php-81|db|mailhog|nginx)
+make logs name=php-81
 ```
 
 
@@ -127,7 +127,7 @@ make logs name=php-8
 #RUN usermod -u 1050 www-data && groupmod -g 1050 www-data
 ```
 
-В `docker/php-8/build/Dockerfile` и заменяем там 1050 на свои идентификаторы.
+В `docker/php-81/build/Dockerfile` и заменяем там 1050 на свои идентификаторы.
 Запускаем все с ребилдом
 
 ```
@@ -138,7 +138,7 @@ make upb
 
 #### Настройки php.ini
 
-Открываем `docker/php-8/config/php.ini`
+Открываем `docker/php-81/config/php.ini`
 Или же редактируем настройки php-fpm - www.conf
 
 
@@ -178,7 +178,7 @@ make mycli
 
 ```
 #docker-compose exec $(name) /bin/sh || true
-make exec name=php-8
+make exec name=php-81
 ```
 
 
@@ -195,7 +195,7 @@ make exec name=php-8
 #### Пример запуска фоновых задач по Cron
 
 ```
-* * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-8 /srv/projects/site.test/yii api/send
+* * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-81 /srv/projects/site.test/yii api/send
 ```
 
 #### Acme.sh
