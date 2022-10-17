@@ -42,6 +42,7 @@ jobs:
     - name: Stop containers
       run: make st
 
+
     - name: Build the stack PHP-8 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-8.yml docker-compose.yml && make upb
     - name: Test PHP-FPM
@@ -51,41 +52,13 @@ jobs:
     - name: Stop containers
       run: make st
 
+
     - name: Build the stack PHP-74 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-74 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-74.yml docker-compose.yml && make upb
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet php-74 9000
     - name: Test Nginx localhost
       run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4'
-    - name: Stop containers
-      run: make st
-
-    - name: Build the stack PHP-73 and hack with default.conf
-      run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-73 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-73.yml docker-compose.yml && make upb
-    - name: Test PHP-FPM
-      run: docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet php-73 9000
-    - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.3'
-    - name: Stop containers
-      run: make st
-
-
-    - name: Build the stack PHP-72 and hack with default.conf
-      run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-72 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-72.yml docker-compose.yml && make upb
-    - name: Test PHP-FPM
-      run: docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet php-72 9000
-    - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.2'
-    - name: Stop containers
-      run: make st
-
-
-    - name: Build the stack PHP-71 and hack with default.conf
-      run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-71 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-71.yml docker-compose.yml && make upb
-    - name: Test PHP-FPM
-      run: docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet php-71 9000
-    - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.1'
     - name: Stop containers
       run: make st
 
@@ -102,14 +75,6 @@ jobs:
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-apache-php-74 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp docker/apache-php-74/config/templates/site.test.conf docker/apache-php-74/config/sites-enabled/default.conf && sed -i 's/ServerName site.test/ /g' docker/apache-php-74/config/sites-enabled/default.conf && cp templates/docker-compose-apache-php-74.yml docker-compose.yml && make upb
     - name: Test Nginx localhost
       run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4'
-    - name: Stop containers
-      run: make st
-
-
-    - name: Build the stack Apache PHP-71 and hack with default.conf
-      run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-apache-php-71 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp docker/apache-php-71/config/templates/site.test.conf docker/apache-php-71/config/sites-enabled/default.conf && sed -i 's/ServerName site.test/ /g' docker/apache-php-71/config/sites-enabled/default.conf && cp templates/docker-compose-apache-php-71.yml docker-compose.yml && make upb
-    - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.1'
     - name: Stop containers
       run: make st
 
