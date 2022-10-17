@@ -1,4 +1,4 @@
-## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0/8.1 FPM + Apache mod-php 5.6/7.1/7.4
+## Nginx + MariaDB + MailHog + PHP-7.1/7.2/7.3/7.4/8.0/8.1 FPM + Apache mod-php 5.6/7.1/7.4/8.1
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
