@@ -24,7 +24,7 @@ and add
 
 ```
 cp mysql.env.example mysql.env
-cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/site.test.conf
+cp docker/nginx/config/templates/site.test.conf-php-82 docker/nginx/config/site.test.conf
 mkdir -p projects/site.test
 echo '<?php echo phpversion();' > projects/site.test/index.php
 make up
@@ -100,8 +100,8 @@ make ps
 #### Viewing container logs
 
 ```
-#docker-compose logs -tail=100 -f (php-81|db|mailhog|nginx)
-make logs name=php-81
+#docker-compose logs -tail=100 -f (php-82|db|mailhog|nginx)
+make logs name=php-82
 ```
 
 *Database host - db*
@@ -123,7 +123,7 @@ Then uncomment the line
 #RUN usermod -u 1050 www-data && groupmod -g 1050 www-data
 ```
 
-In `docker/php-81/build/Dockerfile` and replace id 1050 with your identifiers there.
+In `docker/php-82/build/Dockerfile` and replace id 1050 with your identifiers there.
 We start containers with a rebuild
 
 ```
@@ -134,7 +134,7 @@ make upb
 
 #### php.ini settings
 
-Open `docker/php-81/config/php.ini`
+Open `docker/php-82/config/php.ini`
 Or edit the php-fpm settings - www.conf
 
 
@@ -189,7 +189,7 @@ make mycli
 
 ```
 #docker-compose exec $(name) /bin/sh || true
-make exec name=php-81
+make exec name=php-82
 ```
 
 
@@ -206,7 +206,7 @@ Changed in mysql.env file
 #### An example of running Cron background tasks
 
 ```
-* * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-81 /srv/projects/site.test/yii api/send
+* * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-82 /srv/projects/site.test/yii api/send
 ```
 
 #### Acme.sh

@@ -29,7 +29,7 @@ sudo vim /etc/hosts
 
 ```
 cp mysql.env.example mysql.env
-cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/site.test.conf
+cp docker/nginx/config/templates/site.test.conf-php-82 docker/nginx/config/site.test.conf
 mkdir -p projects/site.test
 echo '<?php echo phpversion();' > projects/site.test/index.php
 make up
@@ -105,8 +105,8 @@ make ps
 #### Просмотр логов контейнера
 
 ```
-#docker-compose logs -tail=100 -f (php-81|db|mailhog|nginx)
-make logs name=php-81
+#docker-compose logs -tail=100 -f (php-82|db|mailhog|nginx)
+make logs name=php-82
 ```
 
 
@@ -127,7 +127,7 @@ make logs name=php-81
 #RUN usermod -u 1050 www-data && groupmod -g 1050 www-data
 ```
 
-В `docker/php-81/build/Dockerfile` и заменяем там 1050 на свои идентификаторы.
+В `docker/php-82/build/Dockerfile` и заменяем там 1050 на свои идентификаторы.
 Запускаем все с ребилдом
 
 ```
@@ -138,7 +138,7 @@ make upb
 
 #### Настройки php.ini
 
-Открываем `docker/php-81/config/php.ini`
+Открываем `docker/php-82/config/php.ini`
 Или же редактируем настройки php-fpm - www.conf
 
 
@@ -178,7 +178,7 @@ make mycli
 
 ```
 #docker-compose exec $(name) /bin/sh || true
-make exec name=php-81
+make exec name=php-82
 ```
 
 
@@ -195,7 +195,7 @@ make exec name=php-81
 #### Пример запуска фоновых задач по Cron
 
 ```
-* * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-81 /srv/projects/site.test/yii api/send
+* * * * *    /usr/local/bin/docker-compose -f /srv/www/docker-compose-php/docker-compose.yml exec php-82 /srv/projects/site.test/yii api/send
 ```
 
 #### Acme.sh
