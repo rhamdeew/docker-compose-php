@@ -1,4 +1,7 @@
 FROM php:5.6-apache
+RUN sed -i -e 's/deb.debian.org/archive.debian.org/g' \
+           -e 's|security.debian.org|archive.debian.org/|g' \
+           -e '/stretch-updates/d' /etc/apt/sources.list
 RUN apt-get update && \
     apt-get -y install libmcrypt4 libvpx4 libfreetype6 libjpeg62-turbo libpng16-16 libxpm4 wget mysql-client msmtp && \
     apt-get -y install libmcrypt-dev libicu-dev libpng-dev libjpeg-dev libfreetype6-dev libxpm-dev libvpx-dev && \
