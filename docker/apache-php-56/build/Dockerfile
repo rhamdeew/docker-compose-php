@@ -16,5 +16,5 @@ RUN apt-get update && \
     apt-get autoremove -y && apt-get clean && rm -rf /usr/src/* && rm -rf /var/lib/apt/lists/*
 
 RUN (cd /etc/apache2/mods-enabled && ln -s ../mods-available/rewrite.load .)
-RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+RUN wget https://getcomposer.org/download/latest-2.2.x/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 #RUN usermod -u 1050 www-data && groupmod -g 1050 www-data
