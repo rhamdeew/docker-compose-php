@@ -1,6 +1,19 @@
-## Nginx + MariaDB + MailHog + PHP-7.4/8.0/8.1/8.2 FPM + Apache mod-php 5.6/7.4/8.1
+## Nginx + MariaDB + MailHog + PHP-7.4/8.0/8.1/8.2 FPM + Apache mod-php 5.6/7.4/8.1 + Nodejs 20
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
+
+
+### Поддерживаемые версии PHP
+
+- PHP-FPM 8.2.12
+- PHP-FPM 8.1.25
+- PHP-FPM 8.0.30
+- PHP-FPM 7.4.33
+- Apache 2 + PHP 8.1.25
+- Apache 2 + PHP 7.4.33
+- Apache 2 + PHP 5.6.40
+
+Для использования предыдущих версий PHP вы можете взять релиз [docker-compose-php v. 0.1.9](https://github.com/rhamdeew/docker-compose-php/tree/v0.1.9)
 
 
 ### Скринкаст на YouTube
@@ -8,7 +21,6 @@
 Разворачиваем Wordpress
 
 [![](http://img.youtube.com/vi/_1DKwP7YuTY/0.jpg)](http://www.youtube.com/watch?v=_1DKwP7YuTY "")
-
 
 
 #### Первый запуск:
@@ -25,7 +37,7 @@ sudo vim /etc/hosts
 127.0.0.1    site.test
 ```
 
-##### 2. Запустите следующие команды
+##### 2. Скопируйте конфиги и запустите контейнеры
 
 ```
 cp mysql.env.example mysql.env
@@ -36,7 +48,7 @@ make up
 ```
 
 <details>
-  <summary>Другие варианты запуска</summary>
+  <summary>Примеры использования других версий PHP</summary>
 
   ```
 cp mysql.env.example mysql.env
@@ -81,7 +93,7 @@ http://site.test - тестовый сайт
 #### Запуск:
 
 ```
-#docker-compose up -d
+#вызывает docker-compose up -d
 make up
 ```
 
@@ -89,7 +101,7 @@ make up
 #### Остановка
 
 ```
-#docker-compose stop
+#вызывает docker-compose stop
 make stop
 ```
 
@@ -97,7 +109,7 @@ make stop
 #### Просмотр статуса запущеных контейнеров
 
 ```
-#docker-compose ps
+#вызывает docker-compose ps
 make ps
 ```
 
@@ -105,7 +117,7 @@ make ps
 #### Просмотр логов контейнера
 
 ```
-#docker-compose logs -tail=100 -f (php-82|db|mailhog|nginx)
+#вызывает docker-compose logs -tail=100 -f (php-82|db|mailhog|nginx)
 make logs name=php-82
 ```
 
@@ -131,7 +143,7 @@ make logs name=php-82
 Запускаем все с ребилдом
 
 ```
-#docker-compose up -d --build
+#вызывает docker-compose up -d --build
 make upb
 ```
 
@@ -149,7 +161,7 @@ make upb
 В конфиге Nginx для сайта закомменчиваем старый апстрим и раскомменчиваем новый.
 
 ```
-#docker-compose stop && docker-compose up -d --build
+#вызывает docker-compose stop && docker-compose up -d --build
 make st upb
 ```
 
@@ -169,7 +181,7 @@ make st upb
 #### Подключиться к БД с консоли
 
 ```
-#docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
+#вызывает docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
 make mycli
 ```
 
@@ -177,7 +189,7 @@ make mycli
 #### Запускать php-скрипты из консоли
 
 ```
-#docker-compose exec $(name) /bin/sh || true
+#вызывает docker-compose exec $(name) /bin/sh || true
 make exec name=php-82
 ```
 
@@ -234,7 +246,7 @@ make acme
 #### Node.js
 
 ```
-#docker-compose -f docker-compose.node.yml run --rm node-10 /bin/ash || true
+#docker-compose -f docker-compose.node.yml run --rm node /bin/ash || true
 make node
 ```
 

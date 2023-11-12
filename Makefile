@@ -43,7 +43,7 @@ acme:
 	docker-compose -f docker-compose.acme.yml run --rm acme acme.sh
 
 node:
-	docker-compose -f docker-compose.node.yml run --rm node-10 /bin/sh -c 'cd /srv/projects; exec /bin/ash' || true
+	docker-compose -f docker-compose.node.yml run --rm node /bin/sh -c 'cd /srv/projects; exec /bin/ash' || true
 
 #make mysqltuner mem=4096
 mysqltuner:

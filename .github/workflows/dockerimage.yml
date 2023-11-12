@@ -28,7 +28,7 @@ jobs:
       run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8080/ | grep 'adminer.org'
 
     - name: Test node
-      run: docker-compose -f docker-compose.node.yml run --rm node-10 node -v | grep 'v10'
+      run: docker-compose -f docker-compose.node.yml run --rm node node -v | grep 'v20'
     - name: Test mycli
       run: docker-compose -f docker-compose.mycli.yml run --rm mycli mycli -V | grep 'Version:'
     - name: Test mysqltuner
@@ -45,29 +45,10 @@ jobs:
 
     - name: Build the stack PHP-81 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-81.yml docker-compose.yml && make upb
-
-    - name: Test DB
-      run: sleep 15 && docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet db 3306
-
-    - name: Test acme.sh
-      run: docker-compose -f docker-compose.acme.yml run --rm acme acme.sh -v | grep acmesh-official
-    - name: Test MailHog localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8025/ | grep 'MailHog'
-    - name: Test Adminer localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8080/ | grep 'adminer.org'
-
-    - name: Test node
-      run: docker-compose -f docker-compose.node.yml run --rm node-10 node -v | grep 'v10'
-    - name: Test mycli
-      run: docker-compose -f docker-compose.mycli.yml run --rm mycli mycli -V | grep 'Version:'
-    - name: Test mysqltuner
-      run: docker-compose -f docker-compose.mysqltuner.yml run --rm mysqltuner /opt/mysqltuner --help | grep 'MySQLTuner'
-
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php_nginx_1 mikesplain/telnet php-81 9000
     - name: Test Nginx localhost
       run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.1'
-
     - name: Stop containers
       run: make st
 

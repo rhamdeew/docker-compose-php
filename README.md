@@ -1,8 +1,20 @@
-## Nginx + MariaDB + MailHog + PHP-7.4/8.0/8.1/8.2 FPM + Apache mod-php 5.6/7.4/8.1
+## Nginx + MariaDB + MailHog + PHP-7.4/8.0/8.1/8.2 FPM + Apache mod-php 5.6/7.4/8.1 + Nodejs 20
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
-[Russian Readme](README_ru.md)
+[RU](README_ru.md)
+
+### Supported PHP versions
+
+- PHP-FPM 8.2.12
+- PHP-FPM 8.1.25
+- PHP-FPM 8.0.30
+- PHP-FPM 7.4.33
+- Apache 2 + PHP 8.1.25
+- Apache 2 + PHP 7.4.33
+- Apache 2 + PHP 5.6.40
+
+To use old versions of PHP you can check [docker-compose-php v. 0.1.9](https://github.com/rhamdeew/docker-compose-php/tree/v0.1.9)
 
 ### First local run:
 
@@ -20,7 +32,7 @@ and add
 127.0.0.1    site.test
 ```
 
-##### 2. Run these commands
+##### 2. Copy configs and start containers
 
 ```
 cp mysql.env.example mysql.env
@@ -31,7 +43,7 @@ make up
 ```
 
 <details>
-  <summary>Another options</summary>
+  <summary>Example of using another PHP versions</summary>
 
 
   ```
@@ -59,7 +71,7 @@ make up
 
 </details>
 
-##### 3. Test running services
+##### 3. Check started services
 
 http://localhost:8025 - mailhog (super:demo)
 
@@ -76,7 +88,7 @@ For ease of management, all basic commands are included in the Makefile. To list
 #### Run:
 
 ```
-#docker-compose up -d
+#runs docker-compose up -d
 make up
 ```
 
@@ -84,7 +96,7 @@ make up
 #### Stop
 
 ```
-#docker-compose stop
+#runs docker-compose stop
 make stop
 ```
 
@@ -92,7 +104,7 @@ make stop
 ####  View the status of running containers
 
 ```
-#docker-compose ps
+#runs docker-compose ps
 make ps
 ```
 
@@ -100,7 +112,7 @@ make ps
 #### Viewing container logs
 
 ```
-#docker-compose logs -tail=100 -f (php-82|db|mailhog|nginx)
+#runs docker-compose logs -tail=100 -f (php-82|db|mailhog|nginx)
 make logs name=php-82
 ```
 
@@ -109,12 +121,12 @@ make logs name=php-82
 ### Fine tuning
 
 
-#### Change login/password super:demo
+#### Changing basic auth login/password (super:demo)
 
 Open `docker/nginx/.htpasswd` and replace its contents.
 
 
-#### Host user permissions
+#### Setting files owner ID is the same as on the host
 
 In the terminal, using the id command, we get the digital identifier of our user and group.
 Then uncomment the line
@@ -127,7 +139,7 @@ In `docker/php-82/build/Dockerfile` and replace id 1050 with your identifiers th
 We start containers with a rebuild
 
 ```
-#docker-compose up -d --build
+#runs docker-compose up -d --build
 make upb
 ```
 
@@ -138,14 +150,14 @@ Open `docker/php-82/config/php.ini`
 Or edit the php-fpm settings - www.conf
 
 
-#### Switch php version
+#### Switch PHP version
 
 Uncomment the block with the container of the required php version in docker-compose.yml.
 
 In Nginx config for the site, comment out the old upstream and uncomment the new one.
 
 ```
-#docker-compose stop && docker-compose up -d --build
+#runs docker-compose stop && docker-compose up -d --build
 make st upb
 ```
 
@@ -161,7 +173,7 @@ In the case of using the container with apache, you must also fix the `docker/ap
 
 There are examples of Nginx config files in `docker/nginx/config/disabled/`
 
-#### Connect to the database from the console
+#### Connecting to the database from the console
 
 ```
 make php
@@ -178,17 +190,17 @@ mysql -uroot -hdb -pMYSQL_ROOT_PASSWORD
 mysql -uroot -hdb -pMYSQL_ROOT_PASSWORD test < dump.sql
 ```
 
-#### Connect to the database from the console
+#### Connecting to the database from the console
 
 ```
-#docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
+#runs docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
 make mycli
 ```
 
-#### Run php scripts from the console
+#### Running PHP scripts from the console
 
 ```
-#docker-compose exec $(name) /bin/sh || true
+#runs docker-compose exec $(name) /bin/sh || true
 make exec name=php-82
 ```
 
@@ -212,7 +224,7 @@ Changed in mysql.env file
 #### Acme.sh
 
 ```
-#docker-compose -f docker-compose.acme.yml run --rm acme acme.sh --issue -d `echo $(d) | sed 's/,/ \-d /g'` -w /acme-challenge
+#runs docker-compose -f docker-compose.acme.yml run --rm acme acme.sh --issue -d `echo $(d) | sed 's/,/ \-d /g'` -w /acme-challenge
 make ssl d="site.ru,www.site.ru"
 ```
 
@@ -245,13 +257,13 @@ make acme
 #### Node.js
 
 ```
-#docker-compose -f docker-compose.node.yml run --rm node-10 /bin/ash || true
+#runs docker-compose -f docker-compose.node.yml run --rm node /bin/ash || true
 make node
 ```
 
 #### MySQL Tuner
 
 ```
-#docker-compose -f docker-compose.mysqltuner.yml run --rm mysqltuner /bin/ash -c "/opt/mysqltuner --user root --host db --pass \$$MYSQL_ROOT_PASSWORD --forcemem $(mem)" || true
+#runs docker-compose -f docker-compose.mysqltuner.yml run --rm mysqltuner /bin/ash -c "/opt/mysqltuner --user root --host db --pass \$$MYSQL_ROOT_PASSWORD --forcemem $(mem)" || true
 make mysqltuner mem=4096
 ```
