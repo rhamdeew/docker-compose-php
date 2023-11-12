@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
 
-  node-10:
-    build: ./docker/node-10/build
+  node:
+    build: ./docker/node/build
     volumes:
      - ./projects:/srv/projects
