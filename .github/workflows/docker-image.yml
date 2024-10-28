@@ -18,26 +18,26 @@ jobs:
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-83 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-83.yml docker-compose.yml && make upb
 
     - name: Test DB
-      run: sleep 15 && docker run --network container:docker-compose-php_nginx_1 rhamdeew/telnet db 3306
+      run: sleep 15 && docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet db 3306
 
     - name: Test acme.sh
-      run: docker-compose -f docker-compose.acme.yml run --rm acme acme.sh -v | grep acmesh-official
+      run: docker compose -f docker-compose.acme.yml run --rm acme acme.sh -v | grep acmesh-official
     - name: Test MailHog localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8025/ | grep 'MailHog'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8025/ | grep 'MailHog'
     - name: Test Adminer localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8080/ | grep 'adminer.org'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8080/ | grep 'adminer.org'
 
     - name: Test node
-      run: docker-compose -f docker-compose.node.yml run --rm node node -v | grep 'v20'
+      run: docker compose -f docker-compose.node.yml run --rm node node -v | grep 'v20'
     - name: Test mycli
-      run: docker-compose -f docker-compose.mycli.yml run --rm mycli mycli -V | grep 'Version:'
+      run: docker compose -f docker-compose.mycli.yml run --rm mycli mycli -V | grep 'Version:'
     - name: Test mysqltuner
-      run: docker-compose -f docker-compose.mysqltuner.yml run --rm mysqltuner /opt/mysqltuner --help | grep 'MySQLTuner'
+      run: docker compose -f docker-compose.mysqltuner.yml run --rm mysqltuner /opt/mysqltuner --help | grep 'MySQLTuner'
 
     - name: Test PHP-FPM
-      run: docker run --network container:docker-compose-php_nginx_1 rhamdeew/telnet php-83 9000
+      run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-83 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.3'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.3'
 
     - name: Stop containers
       run: make st
@@ -46,9 +46,9 @@ jobs:
     - name: Build the stack PHP-82 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-82 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-82.yml docker-compose.yml && make upb
     - name: Test PHP-FPM
-      run: docker run --network container:docker-compose-php_nginx_1 rhamdeew/telnet php-82 9000
+      run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-82 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.2'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.2'
     - name: Stop containers
       run: make st
 
@@ -56,9 +56,9 @@ jobs:
     - name: Build the stack PHP-81 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-81.yml docker-compose.yml && make upb
     - name: Test PHP-FPM
-      run: docker run --network container:docker-compose-php_nginx_1 rhamdeew/telnet php-81 9000
+      run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-81 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.1'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.1'
     - name: Stop containers
       run: make st
 
@@ -66,9 +66,9 @@ jobs:
     - name: Build the stack PHP-8 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-8 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-8.yml docker-compose.yml && make upb
     - name: Test PHP-FPM
-      run: docker run --network container:docker-compose-php_nginx_1 rhamdeew/telnet php-8 9000
+      run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-8 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.0'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.0'
     - name: Stop containers
       run: make st
 
@@ -76,9 +76,9 @@ jobs:
     - name: Build the stack PHP-74 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-74 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-74.yml docker-compose.yml && make upb
     - name: Test PHP-FPM
-      run: docker run --network container:docker-compose-php_nginx_1 rhamdeew/telnet php-74 9000
+      run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-74 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4'
     - name: Stop containers
       run: make st
 
@@ -86,7 +86,7 @@ jobs:
     - name: Build the stack Apache PHP-81 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-apache-php-81 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp docker/apache-php-81/config/templates/site.test.conf docker/apache-php-81/config/sites-enabled/default.conf && sed -i 's/ServerName site.test/ /g' docker/apache-php-81/config/sites-enabled/default.conf && cp templates/docker-compose-apache-php-81.yml docker-compose.yml && make upb
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.1'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.1'
     - name: Stop containers
       run: make st
 
@@ -94,7 +94,7 @@ jobs:
     - name: Build the stack Apache PHP-74 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-apache-php-74 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp docker/apache-php-74/config/templates/site.test.conf docker/apache-php-74/config/sites-enabled/default.conf && sed -i 's/ServerName site.test/ /g' docker/apache-php-74/config/sites-enabled/default.conf && cp templates/docker-compose-apache-php-74.yml docker-compose.yml && make upb
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4'
     - name: Stop containers
       run: make st
 
@@ -102,6 +102,6 @@ jobs:
     - name: Build the stack Apache PHP-56 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-apache-php-56 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp docker/apache-php-56/config/templates/site.test.conf docker/apache-php-56/config/sites-enabled/default.conf && sed -i 's/ServerName site.test/ /g' docker/apache-php-56/config/sites-enabled/default.conf && cp templates/docker-compose-apache-php-56.yml docker-compose.yml && make upb
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php_nginx_1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '5.6'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '5.6'
     - name: Stop containers
       run: make st
