@@ -1,10 +1,10 @@
 server {
     listen 80;
 
-    #имя сервера:
+    # server name:
     server_name site.test;
 
-    # корневая директория
+    # root directory
     root /srv/projects/site.test;
     include conf.d/includes/restrictions.inc;
 
