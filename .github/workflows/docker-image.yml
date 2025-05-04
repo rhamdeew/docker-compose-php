@@ -14,8 +14,8 @@ jobs:
     - name: Create site.test dir and php-file
       run: mkdir -p projects/site.test && echo '<?php echo phpversion();' > projects/site.test/index.php
 
-    - name: Build the stack PHP-83 and hack with default.conf
-      run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-83 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-83.yml docker-compose.yml && make upb
+    - name: Build the stack PHP-84 and hack with default.conf
+      run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-84 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-84.yml docker-compose.yml && make upb
 
     - name: Test DB
       run: sleep 15 && docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet db 3306
@@ -30,15 +30,24 @@ jobs:
     - name: Test node
       run: docker compose -f docker-compose.node.yml run --rm node node -v | grep 'v20'
     - name: Test mycli
-      run: docker compose -f docker-compose.mycli.yml run --rm mycli mycli -V | grep 'Version:'
+      run: docker compose -f docker-compose.mycli.yml run --rm mycli mycli -V | grep 'version '
     - name: Test mysqltuner
       run: docker compose -f docker-compose.mysqltuner.yml run --rm mysqltuner /opt/mysqltuner --help | grep 'MySQLTuner'
 
     - name: Test PHP-FPM
+      run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-84 9000
+    - name: Test Nginx localhost
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.4'
+    - name: Stop containers
+      run: make st
+
+
+    - name: Build the stack PHP-83 and hack with default.conf
+      run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-php-83 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp templates/docker-compose-php-83.yml docker-compose.yml && make upb
+    - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-83 9000
     - name: Test Nginx localhost
       run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.3'
-
     - name: Stop containers
       run: make st
 

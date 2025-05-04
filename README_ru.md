@@ -1,16 +1,17 @@
-## Nginx + MariaDB + MailHog + PHP-7.4/8.0/8.1/8.2/8.3 FPM + Apache mod-php 5.6/7.4/8.1 + Nodejs 20
+## Nginx + MariaDB + MailHog + PHP-7.4/8.0/8.1/8.2/8.3/8.4 FPM + Apache mod-php 5.6/7.4/8.1 + Nodejs 20
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
 
 ### Поддерживаемые версии PHP
 
-- PHP-FPM 8.3.13
-- PHP-FPM 8.2.25
-- PHP-FPM 8.1.30
+- PHP-FPM 8.4.6
+- PHP-FPM 8.3.20
+- PHP-FPM 8.2.28
+- PHP-FPM 8.1.32
 - PHP-FPM 8.0.30
 - PHP-FPM 7.4.33
-- Apache 2 + PHP 8.1.30
+- Apache 2 + PHP 8.1.32
 - Apache 2 + PHP 7.4.33
 - Apache 2 + PHP 5.6.40
 
@@ -58,7 +59,7 @@ cp mysql.env.example mysql.env
 #вы можете выбрать версию PHP
 cp templates/docker-compose-php-81.yml docker-compose.yml
 
-  
+
 #и скопировать соответствующий конфиг для Nginx + PHP-FPM
 cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/site.test.conf
 
@@ -67,7 +68,7 @@ cp templates/docker-compose-apache-php-74.yml docker-compose.yml
 cp docker/nginx/config/templates/site.test.conf-apache-php-74 docker/nginx/config/site.test.conf
 cp docker/apache-php-74/config/templates/site.test.conf docker/apache-php-74/config/sites-enabled/site.test.conf
 
-  
+
 mkdir -p projects/site.test
 echo '<?php echo phpversion();' > projects/site.test/index.php
 

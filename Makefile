@@ -5,10 +5,11 @@ upb:
 stop:
 	docker compose stop
 st: stop
+	@echo "🐳 Stop complete."
 ps:
 	docker compose ps
 
-#make logs name=php-83
+#make logs name=php-84
 logs:
 	docker compose logs --tail=100 -f $(name) || true
 nlogs:
@@ -17,13 +18,13 @@ dblogs:
 	docker compose logs --tail=100 -f db || true
 
 
-#make rs name=php-83
+#make rs name=php-84
 rs:
 	docker compose restart $(name)
 nrs:
 	docker compose restart nginx
 
-#make exec name=php-83
+#make exec name=php-84
 exec:
 	docker compose exec $(name) /bin/sh || true
 ex: exec

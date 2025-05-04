@@ -1,4 +1,4 @@
-## Nginx + MariaDB + MailHog + PHP-7.4/8.0/8.1/8.2/8.3 FPM + Apache mod-php 5.6/7.4/8.1 + Nodejs 20
+## Nginx + MariaDB + MailHog + PHP-7.4/8.0/8.1/8.2/8.3/8.4 FPM + Apache mod-php 5.6/7.4/8.1 + Nodejs 20
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
@@ -6,12 +6,13 @@
 
 ### Supported PHP versions
 
-- PHP-FPM 8.3.13
-- PHP-FPM 8.2.25
-- PHP-FPM 8.1.30
+- PHP-FPM 8.4.6
+- PHP-FPM 8.3.20
+- PHP-FPM 8.2.28
+- PHP-FPM 8.1.32
 - PHP-FPM 8.0.30
 - PHP-FPM 7.4.33
-- Apache 2 + PHP 8.1.30
+- Apache 2 + PHP 8.1.32
 - Apache 2 + PHP 7.4.33
 - Apache 2 + PHP 5.6.40
 
