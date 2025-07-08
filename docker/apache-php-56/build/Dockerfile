@@ -3,8 +3,8 @@ RUN sed -i -e 's/deb.debian.org/archive.debian.org/g' \
            -e 's|security.debian.org|archive.debian.org/|g' \
            -e '/stretch-updates/d' /etc/apt/sources.list
 RUN apt-get update && \
-    apt-get -y install libmcrypt4 libvpx4 libfreetype6 libjpeg62-turbo libpng16-16 libxpm4 wget mysql-client msmtp && \
-    apt-get -y install libmcrypt-dev libicu-dev libpng-dev libjpeg-dev libfreetype6-dev libxpm-dev libvpx-dev && \
+    apt-get -y --allow-unauthenticated install libmcrypt4 libvpx4 libfreetype6 libjpeg62-turbo libpng16-16 libxpm4 wget mysql-client msmtp && \
+    apt-get -y --allow-unauthenticated install libmcrypt-dev libicu-dev libpng-dev libjpeg-dev libfreetype6-dev libxpm-dev libvpx-dev && \
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-install mcrypt && \
     docker-php-ext-install opcache && \
