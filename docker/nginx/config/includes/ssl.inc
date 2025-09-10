@@ -6,7 +6,7 @@
     ssl_stapling_verify on;
 
     # Diffie-Hellman parameter for DHE ciphersuites, recommended 2048 bits
-    ssl_dhparam /etc/nginx/dhparam.pem;
+    ssl_dhparam /etc/nginx/ssl/dhparam.pem;
 
     # intermediate configuration. tweak to your needs.
     ssl_protocols TLSv1.2 TLSv1.3;

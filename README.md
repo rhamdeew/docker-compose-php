@@ -20,7 +20,32 @@ To use old versions of PHP you can check [docker-compose-php v. 0.1.9](https://g
 
 ### First local run:
 
-All you have to do is run these commands:
+#### Recommended approach: Using manage.py (automated setup)
+
+The project now includes a management script (`manage.py`) that automates the entire setup process:
+
+```
+# Initialize default configuration
+python manage.py init
+
+# Generate all configurations (docker-compose.yml, nginx configs, project directories, SSL certificates)
+python manage.py generate
+
+# Start containers
+make up
+```
+
+The `manage.py` script will:
+- Create `config.yml` with your host configurations
+- Generate `docker-compose.yml` with the required PHP versions
+- Create Nginx configuration files for each host
+- Set up SSL certificates for HTTPS hosts
+- Create project directories with test `index.php` files
+- Handle all the configuration automatically
+
+#### Optional: Manual setup
+
+If you prefer manual configuration, you can use the traditional approach:
 
 ##### 1. Edit your /etc/hosts
 
@@ -80,6 +105,31 @@ http://localhost:8025 - mailhog (super:demo)
 http://localhost:8080 - adminer (super:demo)
 
 http://site.test - test site
+
+#### Management script features
+
+The `manage.py` script provides additional functionality for managing your development environment:
+
+```
+# View available commands
+python manage.py help
+
+# Initialize configuration file
+python manage.py init
+
+# Generate/update all configurations
+python manage.py generate
+```
+
+Key features:
+- **Multi-host support**: Configure multiple domains with different PHP versions
+- **SSL certificate generation**: Automatic self-signed certificate creation
+- **Project directory setup**: Creates directories and test files automatically
+- **Apache/Nginx support**: Handles both PHP-FPM and Apache mod_php configurations
+- **HTTPS/HTTP support**: Configures both HTTP and HTTPS virtual hosts
+- **Aliases and redirects**: Supports domain aliases and www redirects
+
+Configuration is handled through `config.yml`, which defines hosts, PHP versions, SSL settings, and domain aliases.
 
 ------
 

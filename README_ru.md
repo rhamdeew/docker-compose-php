@@ -2,6 +2,7 @@
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
+[EN](README.md)
 
 ### Поддерживаемые версии PHP
 
@@ -15,8 +16,7 @@
 - Apache 2 + PHP 7.4.33
 - Apache 2 + PHP 5.6.40
 
-Для использования предыдущих версий PHP вы можете взять релиз [docker-compose-php v. 0.1.9](https://github.com/rhamdeew/docker-compose-php/tree/v0.1.9)
-
+Для использования старых версий PHP вы можете ознакомиться с [docker-compose-php v. 0.1.9](https://github.com/rhamdeew/docker-compose-php/tree/v0.1.9)
 
 ### Скринкаст на YouTube
 
@@ -24,8 +24,34 @@
 
 [![](http://img.youtube.com/vi/_1DKwP7YuTY/0.jpg)](http://www.youtube.com/watch?v=_1DKwP7YuTY "")
 
+### Первый локальный запуск:
 
-#### Первый запуск:
+#### Рекомендуемый подход: Использование manage.py (автоматическая настройка)
+
+Проект теперь включает управляющий скрипт (`manage.py`), который автоматизирует весь процесс настройки:
+
+```
+# Инициализация конфигурации по умолчанию
+python manage.py init
+
+# Генерация всех конфигураций (docker-compose.yml, nginx конфиги, директории проектов, SSL сертификаты)
+python manage.py generate
+
+# Запуск контейнеров
+make up
+```
+
+Скрипт `manage.py` выполнит:
+- Создание `config.yml` с конфигурацией ваших хостов
+- Генерацию `docker-compose.yml` с необходимыми версиями PHP
+- Создание файлов конфигурации Nginx для каждого хоста
+- Настройку SSL сертификатов для HTTPS хостов
+- Создание директорий проектов с тестовыми файлами `index.php`
+- Автоматическую обработку всех конфигураций
+
+#### Опционально: Ручная настройка
+
+Если вы предпочитаете ручную конфигурацию, вы можете использовать традиционный подход:
 
 ##### 1. Отредактируйте /etc/hosts
 
@@ -50,20 +76,21 @@ make up
 ```
 
 <details>
-  <summary>Примеры использования других версий PHP</summary>
+  <summary>Пример использования других версий PHP</summary>
+
 
   ```
 cp mysql.env.example mysql.env
-#edit mysql.env
+#отредактируйте mysql.env
 
-#вы можете выбрать версию PHP
+#вы можете выбрать шаблон с конкретной версией php
 cp templates/docker-compose-php-81.yml docker-compose.yml
 
 
-#и скопировать соответствующий конфиг для Nginx + PHP-FPM
+#и скопировать конкретный конфиг для Nginx + PHP-FPM
 cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/site.test.conf
 
-#или скопировать соответствующие конфиги для варианта Nginx + Apache PHP
+#или скопировать конфиги для Nginx + Apache PHP
 cp templates/docker-compose-apache-php-74.yml docker-compose.yml
 cp docker/nginx/config/templates/site.test.conf-apache-php-74 docker/nginx/config/site.test.conf
 cp docker/apache-php-74/config/templates/site.test.conf docker/apache-php-74/config/sites-enabled/site.test.conf
@@ -74,9 +101,10 @@ echo '<?php echo phpversion();' > projects/site.test/index.php
 
 make up
   ```
+
 </details>
 
-##### 3. Протестируйте запущенные сервисы
+##### 3. Проверьте запущенные сервисы
 
 http://localhost:8025 - mailhog (super:demo)
 
@@ -84,7 +112,30 @@ http://localhost:8080 - adminer (super:demo)
 
 http://site.test - тестовый сайт
 
-*В настройках подключения к БД нужно прописать хост db*
+#### Возможности управляющего скрипта
+
+Скрипт `manage.py` предоставляет дополнительную функциональность для управления вашей средой разработки:
+
+```
+# Просмотр доступных команд
+python manage.py help
+
+# Инициализация файла конфигурации
+python manage.py init
+
+# Генерация/обновление всех конфигураций
+python manage.py generate
+```
+
+Основные возможности:
+- **Поддержка нескольких хостов**: Конфигурация нескольких доменов с разными версиями PHP
+- **Генерация SSL сертификатов**: Автоматическое создание самоподписанных сертификатов
+- **Настройка директорий проектов**: Создание директорий и тестовых файлов автоматически
+- **Поддержка Apache/Nginx**: Обработка конфигураций как PHP-FPM, так и Apache mod_php
+- **Поддержка HTTPS/HTTP**: Конфигурация как HTTP, так и HTTPS виртуальных хостов
+- **Алиасы и редиректы**: Поддержка доменных алиасов и www редиректов
+
+Конфигурация обрабатывается через файл `config.yml`, который определяет хосты, версии PHP, настройки SSL и доменные алиасы.
 
 ------
 
@@ -123,6 +174,7 @@ make ps
 make logs name=php-82
 ```
 
+*Хост базы данных - db*
 
 ### Тонкая настройка
 
@@ -177,10 +229,26 @@ make st upb
 
 В случае с использованием контейнера с apache необходимо также поправить конфиг `docker/apache-php-56/config/sites-enabled/site.test.conf`
 
-Есть примеры конфигов для Nginx в `docker/nginx/config/disabled/`
+Есть примеры конфигов Nginx в `docker/nginx/config/disabled/`
 
+#### Подключение к базе данных из консоли
 
-#### Подключиться к БД с консоли
+```
+make php
+mysql -uroot -hdb -pMYSQL_ROOT_PASSWORD
+```
+
+Пример с импортом SQL-дампа:
+
+```
+make php
+mysql -uroot -hdb -pMYSQL_ROOT_PASSWORD
+> create database test;
+
+mysql -uroot -hdb -pMYSQL_ROOT_PASSWORD test < dump.sql
+```
+
+#### Подключение к базе данных через MyCLI
 
 ```
 #вызывает docker-compose -f docker-compose.mycli.yml run --rm mycli /bin/ash -c "mycli -uroot -hdb -p\$$MYSQL_ROOT_PASSWORD" || true
