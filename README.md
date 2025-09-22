@@ -1,4 +1,4 @@
-## Nginx + MariaDB + MailHog + PHP-7.4/8.0/8.1/8.2/8.3/8.4 FPM + Apache mod-php 5.6/7.4/8.1 + Nodejs 20
+## Docker Compose PHP
 
 ![](https://github.com/rhamdeew/docker-compose-php/workflows/Docker%20Image%20CI/badge.svg)
 
@@ -100,7 +100,7 @@ make up
 
 ##### 3. Check started services
 
-http://localhost:8025 - mailhog (super:demo)
+http://localhost:8025 - mailpit (super:demo)
 
 http://localhost:8080 - adminer (super:demo)
 
@@ -164,7 +164,7 @@ make ps
 #### Viewing container logs
 
 ```
-#runs docker-compose logs -tail=100 -f (php-82|db|mailhog|nginx)
+#runs docker-compose logs -tail=100 -f (php-82|db|mailpit|nginx)
 make logs name=php-82
 ```
 

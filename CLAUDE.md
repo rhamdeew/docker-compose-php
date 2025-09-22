@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Docker Compose PHP development environment that provides a complete LEMP stack with multiple PHP versions support. The project includes Nginx, MariaDB, MailHog, Adminer, and various PHP versions from 5.6 to 8.4.
+This is a Docker Compose PHP development environment that provides a complete LEMP stack with multiple PHP versions support. The project includes Nginx, MariaDB, Mailpit, Adminer, and various PHP versions from 5.6 to 8.4.
 
 ## Common Commands
 
@@ -52,7 +52,7 @@ Each PHP version has its own directory structure:
 ### Key Services
 - **nginx**: Reverse proxy with basic auth (super:demo)
 - **db**: MariaDB database
-- **mailhog**: Email testing interface (port 8025)
+- **mailpit**: Email testing interface (port 8025)
 - **adminer**: Database management interface (port 8080)
 - **php-<version>**: PHP-FPM containers
 - **apache-php-<version>**: Apache with mod_php
@@ -80,5 +80,5 @@ Each PHP version has its own directory structure:
 ## Network Ports
 - **80**: HTTP (Nginx)
 - **443**: HTTPS (disabled by default)
-- **8025**: MailHog interface
+- **8025**: Mailpit interface
 - **8080**: Adminer database interface

@@ -7,8 +7,8 @@ x-logging:
 
 services:
 
-  mailhog:
-    image: mailhog/mailhog
+  mailpit:
+    image: axllent/mailpit
     restart: unless-stopped
     #ports:
     #  - '127.0.0.1:1025:1025'

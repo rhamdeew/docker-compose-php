@@ -22,8 +22,8 @@ jobs:
 
     - name: Test acme.sh
       run: docker compose -f docker-compose.acme.yml run --rm acme acme.sh -v | grep acmesh-official
-    - name: Test MailHog localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8025/ | grep 'MailHog'
+    - name: Test Mailpit localhost
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8025/ | grep 'Mailpit'
     - name: Test Adminer localhost
       run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost:8080/ | grep 'adminer.org'
 
