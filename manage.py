@@ -51,7 +51,6 @@ class ConfigManager:
         self.config_file = 'config.yml'
         self.docker_compose_file = 'docker-compose.yml'
         self.nginx_config_dir = 'docker/nginx/config'
-        self.apache_config_dir = 'docker/apache-php-56/config/sites-enabled'
         self.templates_dir = 'docker/nginx/config/templates'
         self.docker_templates_dir = 'templates'
 
@@ -501,10 +500,15 @@ class ConfigManager:
                                  f'{self.nginx_config_dir}/mailpit.conf']:
                 os.remove(config_file)
 
-        apache_configs = glob.glob(f'{self.apache_config_dir}/*.conf')
-        for config_file in apache_configs:
-            if config_file != f'{self.apache_config_dir}/default.conf':
-                os.remove(config_file)
+        # Clean up Apache configs for all Apache PHP versions
+        apache_versions = [server for server in php_servers if server.startswith('apache-php-')]
+        for apache_version in apache_versions:
+            apache_config_dir = f'docker/{apache_version}/config/sites-enabled'
+            if os.path.exists(apache_config_dir):
+                apache_configs = glob.glob(f'{apache_config_dir}/*.conf')
+                for config_file in apache_configs:
+                    if config_file != f'{apache_config_dir}/default.conf':
+                        os.remove(config_file)
 
         # Generate nginx configs
         for host, host_data in config.items():
@@ -524,9 +528,12 @@ class ConfigManager:
                     print(f"  HTTPS config created: {https_config_file}")
 
             # Generate Apache config if using Apache PHP
-            if host_data.get('php_version', '').startswith('apache-php-'):
+            php_version = host_data.get('php_version', '')
+            if php_version.startswith('apache-php-'):
                 apache_config = self.generate_apache_config(host_data)
-                apache_config_file = f'{self.apache_config_dir}/{host_data["main_host"]}.conf'
+                apache_config_dir = f'docker/{php_version}/config/sites-enabled'
+                os.makedirs(apache_config_dir, exist_ok=True)
+                apache_config_file = f'{apache_config_dir}/{host_data["main_host"]}.conf'
                 with open(apache_config_file, 'w') as f:
                     f.write(apache_config)
                 print(f"  Apache config created: {apache_config_file}")
