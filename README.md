@@ -128,8 +128,32 @@ Key features:
 - **Apache/Nginx support**: Handles both PHP-FPM and Apache mod_php configurations
 - **HTTPS/HTTP support**: Configures both HTTP and HTTPS virtual hosts
 - **Aliases and redirects**: Supports domain aliases and www redirects
+- **Socket mode**: Optional Unix socket communication between Nginx and PHP-FPM for lower latency
 
 Configuration is handled through `config.yml`, which defines hosts, PHP versions, SSL settings, and domain aliases.
+
+#### Socket mode (production optimization)
+
+By default, Nginx communicates with PHP-FPM over TCP (`php-84:9000`). For production environments on a single host, you can switch to Unix sockets to reduce latency:
+
+```yaml
+settings:
+  socket_mode: true
+
+site.test:
+  main_host: site.test
+  php_version: php-84
+  https: false
+```
+
+When `socket_mode: true`, running `python manage.py generate` will:
+- Update each PHP-FPM `www.conf` to listen on `/var/run/php-fpm/php-84.sock` (etc.)
+- Add a shared `sockets` Docker volume to `docker-compose.yml` mounted in both Nginx and PHP-FPM containers
+- Generate Nginx configs using `fastcgi_pass unix:/var/run/php-fpm/php-84.sock`
+
+To switch back to TCP mode, set `socket_mode: false` and re-run `python manage.py generate`.
+
+For manual setup without `manage.py`, socket-mode Nginx templates are available in `docker/nginx/config/templates/` with the `-socket` suffix (e.g. `site.test.conf-php-84-socket`).
 
 ------
 

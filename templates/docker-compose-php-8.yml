@@ -38,6 +38,7 @@ services:
       - ./projects:/srv/projects
       - ./docker/nginx/acme-challenge:/usr/share/nginx/html:ro
       # - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+      # - sockets:/var/run/php-fpm
     ports:
       - "80:80"
       # -"443:443"
@@ -61,4 +62,8 @@ services:
       - ./docker/php-8/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - ./docker/php-8/composer/:/root/.composer/
       - ./projects/:/srv/projects/
+      # - sockets:/var/run/php-fpm
     logging: *default-logging
+
+# volumes:
+#   sockets:

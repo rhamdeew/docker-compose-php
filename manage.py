@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import re
 import sys
 import subprocess
 import glob
@@ -63,6 +64,9 @@ class ConfigManager:
                 return False
 
         default_config = {
+            'settings': {
+                'socket_mode': False,
+            },
             'supersite.test': {
                 'main_host': 'supersite.test',
                 'redirect_aliases': ['www.supersite.test'],
@@ -94,6 +98,22 @@ class ConfigManager:
         with open(self.config_file, 'r') as f:
             return yaml.safe_load(f)
 
+    def get_settings(self, config):
+        """Extract global settings from config"""
+        return config.get('settings', {})
+
+    def get_hosts(self, config):
+        """Extract host definitions from config, excluding global settings"""
+        return {k: v for k, v in config.items() if k != 'settings'}
+
+    def get_socket_mode(self, config):
+        """Return True if socket mode is enabled"""
+        return self.get_settings(config).get('socket_mode', False)
+
+    def get_socket_path(self, php_version):
+        """Return the Unix socket path for a PHP-FPM version"""
+        return f'/var/run/php-fpm/{php_version}.sock'
+
     def stop_containers(self):
         """Stop all running containers"""
         print("Stopping Docker containers...")
@@ -108,12 +128,42 @@ class ConfigManager:
     def get_php_servers(self, config):
         """Get list of PHP servers needed based on config"""
         servers = set()
-        for site_data in config.values():
+        for site_data in self.get_hosts(config).values():
             php_version = site_data.get('php_version', 'php-84')
             servers.add(php_version)
         return sorted(list(servers))
 
-    def generate_nginx_config(self, host_data, php_version):
+    def update_www_conf(self, php_version, socket_mode):
+        """Update PHP-FPM www.conf listen directive for TCP or socket mode"""
+        www_conf_path = f'docker/{php_version}/config/www.conf'
+        if not os.path.exists(www_conf_path):
+            return
+
+        with open(www_conf_path, 'r') as f:
+            content = f.read()
+
+        if socket_mode:
+            listen_value = self.get_socket_path(php_version)
+            listen_line = f'listen = {listen_value}'
+            # Add socket permissions if not present
+            if 'listen.owner' not in content:
+                listen_line += '\nlisten.owner = www-data\nlisten.group = www-data\nlisten.mode = 0660'
+        else:
+            listen_value = '9000'
+            listen_line = f'listen = {listen_value}'
+
+        # Replace listen directive and any existing socket permission lines
+        content = re.sub(r'^listen\s*=.*$', listen_line, content, flags=re.MULTILINE)
+        if not socket_mode:
+            content = re.sub(r'^listen\.(owner|group|mode)\s*=.*\n?', '', content, flags=re.MULTILINE)
+
+        with open(www_conf_path, 'w') as f:
+            f.write(content)
+
+        mode_label = f'unix socket ({listen_value})' if socket_mode else f'TCP ({listen_value})'
+        print(f"  Updated {www_conf_path}: listen = {mode_label}")
+
+    def generate_nginx_config(self, host_data, php_version, socket_mode=False):
         """Generate nginx config for a host"""
         main_host = host_data['main_host']
         redirect_aliases = host_data.get('redirect_aliases', [])
@@ -144,9 +194,13 @@ class ConfigManager:
 }}
 """
 
-            # For HTTP sites, use the template approach for main host
             if php_version.startswith('apache-php-'):
                 template_file = f'{self.templates_dir}/site.test.conf-{php_version}'
+            elif socket_mode:
+                template_file = f'{self.templates_dir}/site.test.conf-{php_version}-socket'
+                if not os.path.exists(template_file):
+                    # Fall back to TCP template if socket variant not found
+                    template_file = f'{self.templates_dir}/site.test.conf-{php_version}'
             else:
                 template_file = f'{self.templates_dir}/site.test.conf-{php_version}'
 
@@ -170,7 +224,7 @@ class ConfigManager:
 
         return config
 
-    def generate_https_config(self, host_data):
+    def generate_https_config(self, host_data, socket_mode=False):
         """Generate HTTPS nginx config with self-signed certificate"""
         php_version = host_data.get('php_version', 'apache-php-56')
         main_host = host_data['main_host']
@@ -243,7 +297,12 @@ class ConfigManager:
     include conf.d/includes/assets.inc;
 }}"""
         else:
-            # PHP-FPM backend - use fastcgi
+            # PHP-FPM backend - use fastcgi (TCP or socket)
+            if socket_mode:
+                fastcgi_pass = f'unix:{self.get_socket_path(php_version)}'
+            else:
+                fastcgi_pass = f'{php_version}:9000'
+
             config += f"""server {{
     listen 443 ssl;
     http2 on;
@@ -272,7 +331,7 @@ class ConfigManager:
     location ~ \\.php$ {{
         try_files $uri = 404;
         include fastcgi_params;
-        fastcgi_pass  {php_version}:9000;
+        fastcgi_pass  {fastcgi_pass};
         fastcgi_index index.php;
         fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
         fastcgi_param  SERVER_NAME    $host;
@@ -323,11 +382,11 @@ class ConfigManager:
             except subprocess.CalledProcessError as e:
                 print(f"  Warning: Failed to generate dhparam.pem: {e}")
 
-        https_hosts = [host for host, data in config.items() if data.get('https', False)]
+        https_hosts = [host for host, data in self.get_hosts(config).items() if data.get('https', False)]
 
         if https_hosts:
             print("Generating SSL certificates...")
-            for host_key, host_data in config.items():
+            for host_key, host_data in self.get_hosts(config).items():
                 if host_data.get('https', False):
                     main_host = host_data['main_host']
                     cert_file = f"{ssl_dir}/{main_host}.crt"
@@ -350,7 +409,7 @@ class ConfigManager:
         """Create project directories and index.php files for each host"""
         print("Creating project directories...")
 
-        for host, host_data in config.items():
+        for host, host_data in self.get_hosts(config).items():
             main_host = host_data['main_host']
             project_dir = f"projects/{main_host}"
 
@@ -377,6 +436,7 @@ class ConfigManager:
     def generate_docker_compose(self, config):
         """Generate docker-compose.yml based on config"""
         php_servers = self.get_php_servers(config)
+        socket_mode = self.get_socket_mode(config)
 
         # Load base template
         base_template = None
@@ -425,10 +485,16 @@ class ConfigManager:
                             insert_index += 1
 
         # Enable HTTPS port if needed
-        https_hosts = [host for host, data in config.items() if data.get('https', False)]
+        https_hosts = [host for host, data in self.get_hosts(config).items() if data.get('https', False)]
         if https_hosts:
             lines = [line.replace('# -"443:443"', '- "443:443"') for line in lines]
             lines = [line.replace('# - ./docker/nginx/ssl:/etc/nginx/ssl:ro', '- ./docker/nginx/ssl:/etc/nginx/ssl:ro') for line in lines]
+
+        # Enable socket volumes if socket mode is on
+        if socket_mode:
+            lines = [line.replace('      # - sockets:/var/run/php-fpm', '      - sockets:/var/run/php-fpm') for line in lines]
+            lines = [line.replace('# volumes:', 'volumes:') for line in lines]
+            lines = [line.replace('#   sockets:', '  sockets:') for line in lines]
 
         with open(self.docker_compose_file, 'w') as f:
             f.write('\n'.join(lines))
@@ -459,16 +525,20 @@ class ConfigManager:
         if not config:
             return False
 
+        socket_mode = self.get_socket_mode(config)
+        hosts = self.get_hosts(config)
+
         # Check mysql.env
         mysql_env_ok = self.check_mysql_env()
 
         # Show proposed changes
         print("\nProposed changes:")
-        print(f"  - Hosts to configure: {list(config.keys())}")
+        print(f"  - Hosts to configure: {list(hosts.keys())}")
         php_servers = self.get_php_servers(config)
         print(f"  - PHP servers needed: {php_servers}")
-        https_hosts = [host for host, data in config.items() if data.get('https', False)]
+        https_hosts = [host for host, data in hosts.items() if data.get('https', False)]
         print(f"  - HTTPS hosts: {https_hosts}")
+        print(f"  - Socket mode: {'enabled (Unix sockets)' if socket_mode else 'disabled (TCP)'}")
         if not mysql_env_ok:
             print("  - Warning: mysql.env configuration missing")
 
@@ -488,6 +558,13 @@ class ConfigManager:
             print("Failed to generate docker-compose.yml")
             return False
         print("docker-compose.yml generated successfully.")
+
+        # Update www.conf for each PHP-FPM server
+        fpm_servers = [s for s in php_servers if not s.startswith('apache-php-')]
+        if fpm_servers:
+            print("Updating PHP-FPM configurations...")
+            for php_version in fpm_servers:
+                self.update_www_conf(php_version, socket_mode)
 
         # Create project directories and index.php files
         self.create_project_directories(config)
@@ -511,8 +588,8 @@ class ConfigManager:
                         os.remove(config_file)
 
         # Generate nginx configs
-        for host, host_data in config.items():
-            nginx_config = self.generate_nginx_config(host_data, host_data.get('php_version', 'php-84'))
+        for host, host_data in hosts.items():
+            nginx_config = self.generate_nginx_config(host_data, host_data.get('php_version', 'php-84'), socket_mode)
             if nginx_config:
                 config_file = f'{self.nginx_config_dir}/{host_data["main_host"]}.conf'
                 with open(config_file, 'w') as f:
@@ -521,7 +598,7 @@ class ConfigManager:
 
                 # Generate HTTPS config if needed
                 if host_data.get('https', False):
-                    https_config = self.generate_https_config(host_data)
+                    https_config = self.generate_https_config(host_data, socket_mode)
                     https_config_file = f'{self.nginx_config_dir}/https_{host_data["main_host"]}.conf'
                     with open(https_config_file, 'w') as f:
                         f.write(https_config)
@@ -553,6 +630,11 @@ class ConfigManager:
         print("  generate - Generate docker-compose.yml and all config files")
         print("           - Also creates project directories and test index.php files")
         print("  help     - Show this help message")
+        print("")
+        print("Socket mode:")
+        print("  Set 'socket_mode: true' under 'settings' in config.yml to enable")
+        print("  Unix socket communication between Nginx and PHP-FPM (lower latency).")
+        print("  Default is TCP mode (socket_mode: false).")
         print("")
         print("Note: The 'generate' command will automatically create project directories")
         print("      in the 'projects/' folder with test index.php files for each host.")

@@ -134,8 +134,32 @@ python manage.py generate
 - **Поддержка Apache/Nginx**: Обработка конфигураций как PHP-FPM, так и Apache mod_php
 - **Поддержка HTTPS/HTTP**: Конфигурация как HTTP, так и HTTPS виртуальных хостов
 - **Алиасы и редиректы**: Поддержка доменных алиасов и www редиректов
+- **Режим сокетов**: Опциональное взаимодействие Nginx и PHP-FPM через Unix-сокеты для снижения задержки
 
 Конфигурация обрабатывается через файл `config.yml`, который определяет хосты, версии PHP, настройки SSL и доменные алиасы.
+
+#### Режим сокетов (оптимизация для production)
+
+По умолчанию Nginx общается с PHP-FPM через TCP (`php-84:9000`). Для production-окружений на одном хосте можно переключиться на Unix-сокеты, чтобы снизить задержку:
+
+```yaml
+settings:
+  socket_mode: true
+
+site.test:
+  main_host: site.test
+  php_version: php-84
+  https: false
+```
+
+При `socket_mode: true` команда `python manage.py generate` выполнит:
+- Обновление `www.conf` каждого PHP-FPM — `listen = /var/run/php-fpm/php-84.sock` (и т.д.)
+- Добавление общего Docker-тома `sockets` в `docker-compose.yml`, примонтированного как в Nginx, так и в PHP-FPM контейнеры
+- Генерацию конфигов Nginx с `fastcgi_pass unix:/var/run/php-fpm/php-84.sock`
+
+Для возврата к TCP-режиму установите `socket_mode: false` и снова запустите `python manage.py generate`.
+
+При ручной настройке без `manage.py` шаблоны Nginx для socket-режима доступны в `docker/nginx/config/templates/` с суффиксом `-socket` (например, `site.test.conf-php-84-socket`).
 
 ------
 
