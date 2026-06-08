@@ -34,7 +34,7 @@ This is a Docker Compose PHP development environment that provides a complete LE
 ### PHP Version Support
 The project supports multiple PHP versions through separate containers:
 - **PHP-FPM versions**: 8.4, 8.3, 8.2, 8.1, 8.0, 7.4
-- **Apache mod_php versions**: 8.1, 7.4, 5.6
+- **Apache mod_php versions**: 8.4, 8.1, 7.4, 5.6
 
 Each PHP version has its own directory structure:
 - `docker/php-<version>/` - PHP-FPM containers

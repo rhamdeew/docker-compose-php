@@ -12,6 +12,7 @@
 - PHP-FPM 8.1.33
 - PHP-FPM 8.0.30
 - PHP-FPM 7.4.33
+- Apache 2 + PHP 8.4.22
 - Apache 2 + PHP 8.1.33
 - Apache 2 + PHP 7.4.33
 - Apache 2 + PHP 5.6.40
@@ -85,9 +86,9 @@ cp templates/docker-compose-php-81.yml docker-compose.yml
 cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/site.test.conf
 
 #or copy configs for Nginx + Apache PHP
-cp templates/docker-compose-apache-php-74.yml docker-compose.yml
-cp docker/nginx/config/templates/site.test.conf-apache-php-74 docker/nginx/config/site.test.conf
-cp docker/apache-php-74/config/templates/site.test.conf docker/apache-php-74/config/sites-enabled/site.test.conf
+cp templates/docker-compose-apache-php-84.yml docker-compose.yml
+cp docker/nginx/config/templates/site.test.conf-apache-php-84 docker/nginx/config/site.test.conf
+cp docker/apache-php-84/config/templates/site.test.conf docker/apache-php-84/config/sites-enabled/site.test.conf
 
 
 mkdir -p projects/site.test
@@ -245,7 +246,7 @@ Also do not forget to tweak Apache configs.
 
 Just copy config `docker/nginx/config/templates/site.test.conf` and tweak it.
 
-In the case of using the container with apache, you must also fix the `docker/apache-php-56/config/sites-enabled/site.test.conf` config.
+In the case of using the container with apache, you must also fix the `docker/apache-php-<version>/config/sites-enabled/site.test.conf` config.
 
 There are examples of Nginx config files in `docker/nginx/config/disabled/`
 

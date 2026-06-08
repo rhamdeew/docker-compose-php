@@ -6,12 +6,13 @@
 
 ### Поддерживаемые версии PHP
 
-- PHP-FPM 8.4.11
+- PHP-FPM 8.4.20
 - PHP-FPM 8.3.24
 - PHP-FPM 8.2.29
 - PHP-FPM 8.1.33
 - PHP-FPM 8.0.30
 - PHP-FPM 7.4.33
+- Apache 2 + PHP 8.4.22
 - Apache 2 + PHP 8.1.33
 - Apache 2 + PHP 7.4.33
 - Apache 2 + PHP 5.6.40
@@ -91,9 +92,9 @@ cp templates/docker-compose-php-81.yml docker-compose.yml
 cp docker/nginx/config/templates/site.test.conf-php-81 docker/nginx/config/site.test.conf
 
 #или скопировать конфиги для Nginx + Apache PHP
-cp templates/docker-compose-apache-php-74.yml docker-compose.yml
-cp docker/nginx/config/templates/site.test.conf-apache-php-74 docker/nginx/config/site.test.conf
-cp docker/apache-php-74/config/templates/site.test.conf docker/apache-php-74/config/sites-enabled/site.test.conf
+cp templates/docker-compose-apache-php-84.yml docker-compose.yml
+cp docker/nginx/config/templates/site.test.conf-apache-php-84 docker/nginx/config/site.test.conf
+cp docker/apache-php-84/config/templates/site.test.conf docker/apache-php-84/config/sites-enabled/site.test.conf
 
 
 mkdir -p projects/site.test
@@ -251,7 +252,7 @@ make st upb
 
 Достаточно скопировать шаблон конфига `docker/nginx/config/templates/site.test.conf` и немного его подправить.
 
-В случае с использованием контейнера с apache необходимо также поправить конфиг `docker/apache-php-56/config/sites-enabled/site.test.conf`
+В случае с использованием контейнера с apache необходимо также поправить конфиг `docker/apache-php-<version>/config/sites-enabled/site.test.conf`
 
 Есть примеры конфигов Nginx в `docker/nginx/config/disabled/`
 
