@@ -48,16 +48,16 @@ services:
     image: adminer
     restart: unless-stopped
 
-  php-84:
-    build: ./docker/php-84/build
-    image: php-84
+  php-85:
+    build: ./docker/php-85/build
+    image: php-85
     restart: unless-stopped
     env_file:
       - mysql.env
     volumes:
-      - ./docker/php-84/config/msmtprc:/etc/msmtprc:ro
-      - ./docker/php-84/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
-      - ./docker/php-84/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-      - ./docker/php-84/composer/:/root/.composer/
+      - ./docker/php-85/config/msmtprc:/etc/msmtprc:ro
+      - ./docker/php-85/config/php.ini:/usr/local/etc/php/conf.d/my.ini:ro
+      - ./docker/php-85/config/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ./docker/php-85/composer/:/root/.composer/
       - ./projects/:/srv/projects/
     logging: *default-logging

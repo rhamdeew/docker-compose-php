@@ -78,7 +78,7 @@ class ConfigManager:
                 'main_host': 'normalsite.test',
                 'redirect_aliases': ['www.normalsite.test'],
                 'aliases': ['api.normalsite.test'],
-                'php_version': 'php-84',
+                'php_version': 'php-85',
                 'https': False
             }
         }
@@ -129,7 +129,7 @@ class ConfigManager:
         """Get list of PHP servers needed based on config"""
         servers = set()
         for site_data in self.get_hosts(config).values():
-            php_version = site_data.get('php_version', 'php-84')
+            php_version = site_data.get('php_version', 'php-85')
             servers.add(php_version)
         return sorted(list(servers))
 
@@ -589,7 +589,7 @@ class ConfigManager:
 
         # Generate nginx configs
         for host, host_data in hosts.items():
-            nginx_config = self.generate_nginx_config(host_data, host_data.get('php_version', 'php-84'), socket_mode)
+            nginx_config = self.generate_nginx_config(host_data, host_data.get('php_version', 'php-85'), socket_mode)
             if nginx_config:
                 config_file = f'{self.nginx_config_dir}/{host_data["main_host"]}.conf'
                 with open(config_file, 'w') as f:

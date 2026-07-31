@@ -6,6 +6,7 @@
 
 ### Supported PHP versions
 
+- PHP-FPM 8.5.9
 - PHP-FPM 8.4.20
 - PHP-FPM 8.3.24
 - PHP-FPM 8.2.29
@@ -64,7 +65,7 @@ and add
 
 ```
 cp mysql.env.example mysql.env
-cp docker/nginx/config/templates/site.test.conf-php-82 docker/nginx/config/site.test.conf
+cp docker/nginx/config/templates/site.test.conf-php-85 docker/nginx/config/site.test.conf
 mkdir -p projects/site.test
 echo '<?php echo phpversion();' > projects/site.test/index.php
 make up
