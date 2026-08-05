@@ -7,13 +7,13 @@
 ### Поддерживаемые версии PHP
 
 - PHP-FPM 8.5.9
-- PHP-FPM 8.4.20
-- PHP-FPM 8.3.24
+- PHP-FPM 8.4.24
+- PHP-FPM 8.3.33
 - PHP-FPM 8.2.29
 - PHP-FPM 8.1.33
 - PHP-FPM 8.0.30
 - PHP-FPM 7.4.33
-- Apache 2 + PHP 8.4.22
+- Apache 2 + PHP 8.4.24
 - Apache 2 + PHP 8.1.33
 - Apache 2 + PHP 7.4.33
 - Apache 2 + PHP 5.6.40
