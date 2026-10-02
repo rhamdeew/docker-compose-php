@@ -37,7 +37,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-85 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.5'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.5.11'
     - name: Stop containers
       run: make st
 
@@ -47,7 +47,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-84 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.4'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.4.26'
     - name: Stop containers
       run: make st
 
@@ -57,7 +57,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-83 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.3'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.3.35'
     - name: Stop containers
       run: make st
 
@@ -67,7 +67,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-82 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.2'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.2.34'
     - name: Stop containers
       run: make st
 
