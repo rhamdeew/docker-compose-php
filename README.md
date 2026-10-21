@@ -6,14 +6,14 @@
 
 ### Supported PHP versions
 
-- PHP-FPM 8.5.11
-- PHP-FPM 8.4.26
-- PHP-FPM 8.3.35
-- PHP-FPM 8.2.34
+- PHP-FPM 8.5.12
+- PHP-FPM 8.4.27
+- PHP-FPM 8.3.36
+- PHP-FPM 8.2.35
 - PHP-FPM 8.1.33
 - PHP-FPM 8.0.30
 - PHP-FPM 7.4.33
-- Apache 2 + PHP 8.4.26
+- Apache 2 + PHP 8.4.27
 - Apache 2 + PHP 8.1.33
 - Apache 2 + PHP 7.4.33
 - Apache 2 + PHP 5.6.40

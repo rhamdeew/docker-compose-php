@@ -37,7 +37,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-85 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.5.11'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.5.12'
     - name: Stop containers
       run: make st
 
@@ -57,7 +57,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-83 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.3.35'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.3.36'
     - name: Stop containers
       run: make st
 
@@ -67,7 +67,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-82 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.2.34'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.2.35'
     - name: Stop containers
       run: make st
 
