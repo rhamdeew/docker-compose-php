@@ -18,6 +18,25 @@
 - Apache 2 + PHP 7.4.33
 - Apache 2 + PHP 5.6.40
 
+### ⚠️ Security notice: CVE-2026-109618 and CVE-2026-109619 (October 21, 2026)
+
+On October 21, 2026, the PHP project [fixed two critical vulnerabilities](https://www.php.net/archive/2026.php#2026-10-21-5) (CVSS v4.0 9.2) that can allow **unauthenticated remote code execution**. They affect every PHP setup that serves web requests: PHP-FPM, Apache mod_php, php-cgi and others. The risk is highest for mod_php.
+
+- [CVE-2026-109618](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w): RCE via memory corruption on out-of-memory
+- [CVE-2026-109619](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp): RCE via stale global state between requests
+
+**Fixed** in this repository (rebuild your containers with `make upb`):
+
+- PHP-FPM 8.5.12, 8.4.27, 8.3.36, 8.2.35
+- Apache 2 + PHP 8.4.27
+
+**Still vulnerable.** These branches no longer get official updates from the PHP project, so no fixed release exists:
+
+- PHP-FPM 8.1.33, 8.0.30, 7.4.33
+- Apache 2 + PHP 8.1.33, 7.4.33, 5.6.40
+
+Do not use these versions in production or expose them to the internet. Upgrade to PHP 8.2 or newer. If that is not possible, apply the mitigations from the [official advisory](https://www.php.net/archive/2026.php#2026-10-21-5). They reduce the risk but do not remove it.
+
 To use old versions of PHP you can check [docker-compose-php v. 0.1.9](https://github.com/rhamdeew/docker-compose-php/tree/v0.1.9)
 
 ### First local run:
