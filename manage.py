@@ -71,7 +71,7 @@ class ConfigManager:
                 'main_host': 'supersite.test',
                 'redirect_aliases': ['www.supersite.test'],
                 'aliases': ['api.supersite.test'],
-                'php_version': 'apache-php-56',
+                'php_version': 'apache-php-84',
                 'https': True
             },
             'normalsite.test': {
@@ -226,7 +226,7 @@ class ConfigManager:
 
     def generate_https_config(self, host_data, socket_mode=False):
         """Generate HTTPS nginx config with self-signed certificate"""
-        php_version = host_data.get('php_version', 'apache-php-56')
+        php_version = host_data.get('php_version', 'php-85')
         main_host = host_data['main_host']
         redirect_aliases = host_data.get('redirect_aliases', [])
         aliases = host_data.get('aliases', [])

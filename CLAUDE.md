@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Docker Compose PHP development environment that provides a complete LEMP stack with multiple PHP versions support. The project includes Nginx, MariaDB, Mailpit, Adminer, and various PHP versions from 5.6 to 8.4.
+This is a Docker Compose PHP development environment that provides a complete LEMP stack with multiple PHP versions support. The project includes Nginx, MariaDB, Mailpit, Adminer, and various PHP versions from 7.4 to 8.5.
 
 ## Common Commands
 
@@ -33,8 +33,10 @@ This is a Docker Compose PHP development environment that provides a complete LE
 
 ### PHP Version Support
 The project supports multiple PHP versions through separate containers:
-- **PHP-FPM versions**: 8.4, 8.3, 8.2, 8.1, 8.0, 7.4
-- **Apache mod_php versions**: 8.4, 8.1, 7.4, 5.6
+- **PHP-FPM versions**: 8.5 (default), 8.4, 8.3, 8.2, 8.1, 8.0, 7.4
+- **Apache mod_php versions**: 8.4, 8.1, 7.4
+- PHP 7.1 and 5.6 are no longer supported
+- EOL images (FPM 8.1, 8.0, 7.4 and Apache 8.1, 7.4) are rebuilt with the official backports for CVE-2026-109618/109619
 
 Each PHP version has its own directory structure:
 - `docker/php-<version>/` - PHP-FPM containers
