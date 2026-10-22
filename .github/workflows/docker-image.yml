@@ -47,7 +47,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-84 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.4.26'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.4.27'
     - name: Stop containers
       run: make st
 
@@ -77,7 +77,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-81 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.1'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.1.34'
     - name: Stop containers
       run: make st
 
@@ -87,7 +87,7 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-8 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.0'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.0.30'
     - name: Stop containers
       run: make st
 
@@ -97,7 +97,15 @@ jobs:
     - name: Test PHP-FPM
       run: docker run --network container:docker-compose-php-nginx-1 rhamdeew/telnet php-74 9000
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4.33'
+    - name: Stop containers
+      run: make st
+
+
+    - name: Build the stack Apache PHP-84 and hack with default.conf
+      run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-apache-php-84 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp docker/apache-php-84/config/templates/site.test.conf docker/apache-php-84/config/sites-enabled/default.conf && sed -i 's/ServerName site.test/ /g' docker/apache-php-84/config/sites-enabled/default.conf && cp templates/docker-compose-apache-php-84.yml docker-compose.yml && make upb
+    - name: Test Nginx localhost
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.4.27'
     - name: Stop containers
       run: make st
 
@@ -105,7 +113,7 @@ jobs:
     - name: Build the stack Apache PHP-81 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-apache-php-81 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp docker/apache-php-81/config/templates/site.test.conf docker/apache-php-81/config/sites-enabled/default.conf && sed -i 's/ServerName site.test/ /g' docker/apache-php-81/config/sites-enabled/default.conf && cp templates/docker-compose-apache-php-81.yml docker-compose.yml && make upb
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.1'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '8.1.34'
     - name: Stop containers
       run: make st
 
@@ -113,6 +121,6 @@ jobs:
     - name: Build the stack Apache PHP-74 and hack with default.conf
       run: cp mysql.env.example mysql.env && cp docker/nginx/config/templates/site.test.conf-apache-php-74 docker/nginx/config/default.conf && sed -i 's/server_name site.test/server_name _/g' docker/nginx/config/default.conf && cp docker/apache-php-74/config/templates/site.test.conf docker/apache-php-74/config/sites-enabled/default.conf && sed -i 's/ServerName site.test/ /g' docker/apache-php-74/config/sites-enabled/default.conf && cp templates/docker-compose-apache-php-74.yml docker-compose.yml && make upb
     - name: Test Nginx localhost
-      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4'
+      run: docker run --network container:docker-compose-php-nginx-1 appropriate/curl -s --retry 1 --retry-connrefused http://super:demo@localhost/ | grep '7.4.33'
     - name: Stop containers
       run: make st
